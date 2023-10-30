@@ -14,6 +14,18 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+model Post {
+    id        Int      @id @default(autoincrement())
+    name      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    createdBy   User   @relation(fields: [createdById], references: [id])
+    createdById String
+
+    @@index([name])
+}
+
 // Necessary for Next auth
 model Account {
     id                String  @id @default(cuid())
@@ -52,6 +64,7 @@ model User {
     recipes       Recipe[]       @relation("RecipeAuthor")
     savedRecipes  Recipe[]       @relation("RecipeSaved")
     reviews       RecipeReview[]
+    Post          Post[]
 }
 
 model VerificationToken {
@@ -88,6 +101,7 @@ model Recipe {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
     name             String
     description      String?
     requiredUtensils String?
@@ -117,6 +131,7 @@ model RecipeStep {
     description String
     duration    Int
     stepType    RecipeStepType
+
     recipe      Recipe                 @relation(fields: [recipeId], references: [id])
     recipeId    String
     ingredients RecipeStepIngredient[]
