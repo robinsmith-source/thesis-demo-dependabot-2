@@ -1,23 +1,24 @@
 "use client";
 
 import {
-    Avatar,
-    Button,
-    Dropdown,
-    DropdownItem,
-    DropdownMenu,
-    DropdownTrigger, Image,
-    Navbar, NavbarBrand,
-    NavbarContent,
-    NavbarItem,
-    NavbarMenu,
-    NavbarMenuItem,
-    NavbarMenuToggle,
+  Avatar,
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Image,
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  NavbarMenu,
+  NavbarMenuItem,
+  NavbarMenuToggle,
 } from "@nextui-org/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Session } from "next-auth";
-import NextImage from "next/image";
 
 function LoginBar({ session }: { session: Session }) {
   return (
@@ -50,6 +51,7 @@ function LoginBar({ session }: { session: Session }) {
     </Dropdown>
   );
 }
+import NextImage from "next/image";
 
 export default function MainNavbar({ session }: { session: Session | null }) {
   const pathname = usePathname();
@@ -57,15 +59,15 @@ export default function MainNavbar({ session }: { session: Session | null }) {
   return (
     <Navbar maxWidth="xl" className="">
       <NavbarBrand>
-          <Image
-            as={NextImage}
-            width={50}
-            height={50}
-            src="/images/Logo_round_V2.png"
-            alt="Logo"
-            className="w-24 h-24 mb-2 object-contain"
-          />
-        </NavbarBrand>
+        <Image
+          as={NextImage}
+          width={50}
+          height={50}
+          src="/images/Logo_round_V2.png"
+          alt="Logo"
+          className="mb-2 h-24 w-24 object-contain"
+        />
+      </NavbarBrand>
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarMenuToggle />
       </NavbarContent>

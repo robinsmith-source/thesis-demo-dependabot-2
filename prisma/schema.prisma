@@ -14,7 +14,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-
 // Necessary for Next auth
 model Account {
     id                String  @id @default(cuid())
@@ -110,6 +109,9 @@ enum RecipeStepType {
     PREP
     COOK
     REST
+    SEASON
+    SERVE
+    MIX
 }
 
 model RecipeStep {
@@ -123,11 +125,23 @@ model RecipeStep {
     ingredients RecipeStepIngredient[]
 }
 
+enum Unit {
+    GRAM
+    KILOGRAM
+    LITER
+    MILLILITER
+    TEASPOON
+    TABLESPOON
+    CUP
+    PINCH
+    PIECE
+}
+
 model RecipeStepIngredient {
     id           String     @id @default(cuid())
     name         String
     quantity     Float
-    unit         String?
+    unit         Unit?
     recipeStep   RecipeStep @relation(fields: [recipeStepId], references: [id])
     recipeStepId String
 }

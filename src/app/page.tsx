@@ -29,15 +29,15 @@ export default async function Home() {
                     fullWidth
                 />
             </div>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {featuredRecipes ? (
-                    featuredRecipes.map((recipe) => (
-                        <RecipeCard recipeId={recipe.id} key={recipe.id} />
-                    ))
-                ) : (
-                    <h2>No recipes found...</h2>
-                )}
-            </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {featuredRecipes ? (
+              featuredRecipes.map((recipe) => (
+                <RecipeCard recipeId={recipe.id} key={recipe.id} />
+              ))
+            ) : (
+              <h2>No recipes found...</h2>
+            )}
+          </div>
         </main>
     );
 }
