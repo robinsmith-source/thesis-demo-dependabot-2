@@ -7,7 +7,9 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  Image,
   Navbar,
+  NavbarBrand,
   NavbarContent,
   NavbarItem,
   NavbarMenu,
@@ -49,12 +51,23 @@ function LoginBar({ session }: { session: Session }) {
     </Dropdown>
   );
 }
+import NextImage from "next/image";
 
 export default function MainNavbar({ session }: { session: Session | null }) {
   const pathname = usePathname();
 
   return (
-    <Navbar maxWidth="xl">
+    <Navbar maxWidth="xl" className="">
+      <NavbarBrand>
+        <Image
+          as={NextImage}
+          width={50}
+          height={50}
+          src="/images/Logo_round_V2.png"
+          alt="Logo"
+          className="mb-2 h-24 w-24 object-contain"
+        />
+      </NavbarBrand>
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarMenuToggle />
       </NavbarContent>
