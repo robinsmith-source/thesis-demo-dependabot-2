@@ -3,7 +3,7 @@ import type { ClientSafeProvider, LiteralUnion } from "next-auth/react";
 import { getProviders, signIn, useSession } from "next-auth/react";
 import type { BuiltInProviderType } from "next-auth/providers";
 import { useEffect, useState } from "react";
-import { Button, Card, CardBody } from "@nextui-org/react";
+import { Button, CardBody, CardHeader } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
 export default function SignIn() {
@@ -31,24 +31,25 @@ export default function SignIn() {
 
   return (
     <>
-      <h1 className="text-5xl font-bold">Signin</h1>
-      {providers &&
-        Object.values(providers).map((provider) => (
-          <Card key={provider.name} className="w-96">
-            <CardBody>
-              <Button
-                variant="solid"
-                type="button"
-                color="success"
-                size="lg"
-                className="w-64"
-                onClick={() => signIn(provider.id)}
-              >
-                Sign in with {provider.name}
-              </Button>
-            </CardBody>
-          </Card>
-        ))}
+      <CardHeader className="flex justify-center">
+        <h1 className="text-5xl font-bold">Sign in</h1>
+      </CardHeader>
+      <CardBody>
+        {providers &&
+          Object.values(providers).map((provider) => (
+            <Button
+              key={provider.name}
+              variant="solid"
+              type="button"
+              color="success"
+              size="lg"
+              className="w-full"
+              onClick={() => signIn(provider.id)}
+            >
+              Sign in with {provider.name}
+            </Button>
+          ))}
+      </CardBody>
     </>
   );
 }

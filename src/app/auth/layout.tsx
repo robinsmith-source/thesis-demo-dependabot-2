@@ -1,3 +1,4 @@
+import { Card } from "@nextui-org/react";
 import React from "react";
 export default function AuthLayout({
   children,
@@ -5,8 +6,8 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="flex h-96 flex-col items-center justify-center gap-y-3">
-      {children}
+    <main className="relative flex min-h-[80vh] flex-col items-center justify-center">
+      <Card className="w-96 gap-y-6 p-6">{children}</Card>
     </main>
   );
 }
