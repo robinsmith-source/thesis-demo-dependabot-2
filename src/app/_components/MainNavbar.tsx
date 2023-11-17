@@ -52,9 +52,11 @@ function LoginBar({ session }: { session: Session }) {
   );
 }
 import NextImage from "next/image";
+import { useSession } from "next-auth/react";
 
-export default function MainNavbar({ session }: { session: Session | null }) {
+export default function MainNavbar() {
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   return (
     <Navbar maxWidth="xl" className="">
