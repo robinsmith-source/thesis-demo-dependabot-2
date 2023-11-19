@@ -28,10 +28,9 @@ export default function TagInput() {
     }
   };
 
-  const addTag = async () => {
+  const addTag = () => {
     if (inputValue.trim() !== "") {
       append(inputValue.trim());
-      await methods.trigger("tags");
       setInputValue("");
     }
   };
@@ -39,7 +38,7 @@ export default function TagInput() {
   const handleClose = (tagToRemove: number) => {
     remove(tagToRemove);
   };
-  console.log(fieldState.invalid);
+
   useEffect(() => {
     if (Array.isArray(fieldState.error)) {
       setErrorMessage(fieldState.error?.find((e) => !!e)?.message || "");
@@ -79,6 +78,7 @@ export default function TagInput() {
             </div>
           )
         }
+        endContent={fields.length}
         placeholder={
           fields.length === 0 ? "Enter tags, separated by comma" : ""
         }

@@ -26,6 +26,7 @@ export default function Page() {
   });
 
   const methods = useForm<Recipe>({
+    mode: "onTouched",
     resolver: zodResolver(schema),
     defaultValues: {
       name: "",
@@ -95,7 +96,7 @@ export default function Page() {
                   {["EASY", "MEDIUM", "HARD", "EXPERT"].map((difficulty) => (
                     <SelectItem
                       key={difficulty}
-                      value={difficulty as RecipeDifficulty | ""}
+                      value={difficulty as RecipeDifficulty}
                     >
                       {difficulty}
                     </SelectItem>
