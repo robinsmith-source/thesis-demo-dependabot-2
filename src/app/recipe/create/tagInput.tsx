@@ -40,7 +40,6 @@ export default function TagInput() {
   // @ts-ignore Unfortunately due to the way zod validation works this is an array of potential errors or null
   const errorMessage = fieldState?.error?.filter((e) => !!e)?.[0]?.message;
 
-  console.log(fieldState);
   return (
     <>
       <Input
