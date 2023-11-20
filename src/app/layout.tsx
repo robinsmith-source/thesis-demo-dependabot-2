@@ -35,7 +35,7 @@ export default async function RootLayout({
       >
         <SessionProvider session={session}>
           <Providers>
-            <MainNavbar session={session} />
+            <MainNavbar />
             <TRPCReactProvider headers={headers()}>
               <div className="mx-auto max-w-screen-xl p-8">{children}</div>
             </TRPCReactProvider>
