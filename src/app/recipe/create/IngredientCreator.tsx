@@ -10,7 +10,7 @@ interface IngredientCreatorProps {
 const IngredientCreator: React.FC<IngredientCreatorProps> = ({
   stepIndex,
 }: IngredientCreatorProps) => {
-  const { control, register } = useFormContext();
+  const { control } = useFormContext();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -24,11 +24,8 @@ const IngredientCreator: React.FC<IngredientCreatorProps> = ({
           <Controller
             control={control}
             name={`steps.${stepIndex}.ingredients.${index}.name`}
-            render={({ fieldState }) => (
-              <Input
-                {...register(`steps.${stepIndex}.ingredients.${index}.name`)}
-                label="Name"
-              />
+            render={({ field, fieldState }) => (
+              <Input {...field} label="Name" />
             )}
           />
 
@@ -37,15 +34,11 @@ const IngredientCreator: React.FC<IngredientCreatorProps> = ({
             name={`steps.${stepIndex}.ingredients.${index}.unit`}
             render={({ field, fieldState }) => (
               <Select
+                {...field}
                 isRequired
                 label="Unit"
                 description="Select ingredient unit"
                 variant="bordered"
-                {...register(`steps.${stepIndex}.ingredients.${index}.unit`, {
-                  required: true,
-                })}
-                /* isInvalid={!!fieldState.error}
-                                                                                                                                errorMessage={fieldState.error?.message} */
                 selectedKeys={[field.value]}
               >
                 {[
@@ -74,7 +67,14 @@ const IngredientCreator: React.FC<IngredientCreatorProps> = ({
             control={control}
             name={`steps.${stepIndex}.ingredients.${index}.quantity`}
             render={({ field, fieldState }) => (
-              <Input {...field} type="number" label="Quantity" />
+              <Input
+                {...field}
+                onChange={(event) => {
+                  field.onChange(+event.target.value);
+                }}
+                type="number"
+                label="Quantity"
+              />
             )}
           />
 

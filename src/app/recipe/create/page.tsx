@@ -82,7 +82,7 @@ export default function Page() {
         description: "",
         difficulty: "EASY",
         tags: [],
-        steps: [{ description: "", duration: 0, stepType: "PREP" }],
+        steps: [],
       });
     },
   });

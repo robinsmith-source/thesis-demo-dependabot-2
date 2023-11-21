@@ -141,7 +141,7 @@ export const recipeRouter = createTRPCRouter({
                 stepType: step.stepType,
                 ingredients: {
                   createMany: {
-                    data: step.ingredients.map((ingredient) => ({
+                    data: step.ingredients?.map((ingredient) => ({
                       name: ingredient.name,
                       quantity: ingredient.quantity,
                       unit: ingredient.unit,

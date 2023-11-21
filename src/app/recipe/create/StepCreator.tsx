@@ -29,7 +29,14 @@ const StepCreator: React.FC = () => {
             control={control}
             name={`steps.${index}.duration`}
             render={({ field, fieldState }) => (
-              <Input {...field} type="number" label="Duration" />
+              <Input
+                {...field}
+                onChange={(event) => {
+                  field.onChange(+event.target.value);
+                }}
+                type="number"
+                label="Duration"
+              />
             )}
           />
 
