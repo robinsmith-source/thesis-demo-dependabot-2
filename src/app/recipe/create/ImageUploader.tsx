@@ -14,6 +14,7 @@ import { SetStateAction, useCallback, useState } from "react";
 import { FaCircleXmark, FaCloudArrowUp } from "react-icons/fa6";
 import { api } from "~/trpc/react";
 import { CardHeader } from "@nextui-org/card";
+import toast from "react-hot-toast";
 
 export default function ImageUploader() {
   const { control, getValues } = useFormContext();
@@ -37,12 +38,13 @@ export default function ImageUploader() {
           append(file.key);
         });
         setFiles([]);
+        toast.success("Upload completed");
       },
       onUploadError: () => {
-        alert("error occurred while uploading");
+        toast.error("Error occurred while uploading");
       },
       onUploadBegin: () => {
-        alert("upload has begun");
+        toast.loading("Upload has begun");
       },
     },
   );
@@ -87,12 +89,11 @@ export default function ImageUploader() {
           <div className="flex gap-2">
             {fields.map((image, index) => (
               <div
-                className="group relative grid h-24 w-24 place-items-center overflow-hidden rounded-large bg-black/10 p-1"
+                className=" group relative grid  place-items-center overflow-hidden rounded-large"
                 key={image.id}
               >
                 <Image
-                  width={100}
-                  height={100}
+                  className="h-32 w-32 object-cover transition group-hover:scale-110"
                   alt={`Recipe image ${index}`}
                   src={`https://utfs.io/f/${getValues(`images.${index}`)}`}
                 />
