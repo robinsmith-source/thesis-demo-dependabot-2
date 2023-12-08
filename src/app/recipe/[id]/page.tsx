@@ -1,10 +1,11 @@
 import { api } from "~/trpc/server";
 import React from "react";
-import { Card, Chip, Image, Link } from "@nextui-org/react";
+import { Card, Chip, Divider, Image, Link } from "@nextui-org/react";
 import NextImage from "next/image";
 import { notFound } from "next/navigation";
 import RecipeStep from "./RecipeStep";
 import IngredientTable from "./IngredientTable";
+import ReviewSection from "~/app/recipe/[id]/_review/ReviewSection";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const recipe = await api.recipe.get.query({ id: params.id });
@@ -70,6 +71,9 @@ export default async function Page({ params }: { params: { id: string } }) {
           <Chip key={tag}>#{tag}</Chip>
         ))}
       </div>
+
+      <Divider className="my-4" />
+      <ReviewSection recipeId={recipe.id} />
     </main>
   );
 }
