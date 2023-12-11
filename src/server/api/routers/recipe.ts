@@ -63,7 +63,7 @@ export const recipeRouter = createTRPCRouter({
         difficulty: z.enum(["EASY", "MEDIUM", "HARD", "EXPERT"]).optional(),
         labels: z.array(z.string()).optional(),
         tags: z.array(z.string()).optional(),
-        author: z.string().optional(),
+        authorId: z.string().cuid().optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -74,8 +74,7 @@ export const recipeRouter = createTRPCRouter({
           name: { contains: input.name },
           difficulty: input.difficulty,
           tags: { hasEvery: input.tags },
-          labels: { some: { name: { in: input.labels } } },
-          author: { name: { contains: input.author } },
+          authorId: { contains: input.authorId },
         },
         include: {
           steps: {
