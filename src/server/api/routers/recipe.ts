@@ -59,17 +59,30 @@ export const recipeRouter = createTRPCRouter({
     .input(
       z.object({
         take: z.number().min(1).max(50),
+        skip: z.number().min(0).optional(),
         name: z.string().optional(),
         difficulty: z.enum(["EASY", "MEDIUM", "HARD", "EXPERT"]).optional(),
         labels: z.array(z.string()).nullable(),
         tags: z.array(z.string()).optional(),
         authorId: z.string().cuid().optional(),
+        orderBy: z.enum(["NEWEST", "OLDEST"]).optional(),
+        groupBy: z.enum(["NONE", "LABELS"]).optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
       const recipes = await ctx.db.recipe.findMany({
         take: input.take,
-        orderBy: { createdAt: "desc" },
+        skip: input.skip ?? 0,
+        orderBy: (() => {
+          switch (input.orderBy) {
+            case "NEWEST":
+              return { createdAt: "desc" };
+            case "OLDEST":
+              return { createdAt: "asc" };
+            default:
+              return { createdAt: "desc" };
+          }
+        })(),
         where: {
           name: { contains: input.name },
           difficulty: input.difficulty,
