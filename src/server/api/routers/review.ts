@@ -12,32 +12,48 @@ export const reviewRouter = createTRPCRouter({
     .input(
       z.object({
         rating: z.number().min(1).max(5),
-        comment: z.string().nullable(),
+        comment: z.string().optional(),
         recipeId: z.string().cuid(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const existingReview = await ctx.db.recipeReview.findFirst({
-        where: {
-          recipeId: input.recipeId,
-          authorId: ctx.session.user.id,
-        },
-      });
-
-      if (existingReview) {
-        throw new TRPCError({
-          code: "CONFLICT",
-          message: "You have already reviewed this recipe",
+      return await ctx.db.$transaction(async (tx) => {
+        const existingReview = await tx.recipeReview.findFirst({
+          where: {
+            recipeId: input.recipeId,
+            authorId: ctx.session.user.id,
+          },
         });
-      }
 
-      return ctx.db.recipeReview.create({
-        data: {
-          rating: input.rating,
-          comment: input.comment,
-          recipe: { connect: { id: input.recipeId } },
-          author: { connect: { id: ctx.session.user.id } },
-        },
+        if (existingReview) {
+          throw new TRPCError({
+            code: "CONFLICT",
+            message: "You have already reviewed this recipe",
+          });
+        }
+
+        const recipe = await tx.recipe.findFirst({
+          where: {
+            id: input.recipeId,
+            authorId: ctx.session.user.id,
+          },
+        });
+
+        if (recipe) {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "You cannot review your own recipe",
+          });
+        }
+
+        return ctx.db.recipeReview.create({
+          data: {
+            rating: input.rating,
+            comment: input.comment,
+            recipe: { connect: { id: input.recipeId } },
+            author: { connect: { id: ctx.session.user.id } },
+          },
+        });
       });
     }),
 
