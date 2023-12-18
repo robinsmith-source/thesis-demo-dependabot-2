@@ -18,10 +18,7 @@ export default function ReviewForm({
   submit,
 }: {
   formValue: Partial<RecipeReview>;
-  submit: (recipeForm: {
-    rating: 1 | 2 | 3 | 4 | 5;
-    comment: string | null;
-  }) => void;
+  submit: (recipeForm: { rating: number; comment: string | null }) => void;
 }) {
   const schema = z.object({
     rating: z.number().min(1).max(5),
