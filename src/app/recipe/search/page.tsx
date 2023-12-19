@@ -1,7 +1,8 @@
 import { api } from "~/trpc/server";
 import RecipeCard from "~/app/_components/RecipeCard";
-import RecipeSearchbar from "~/app/_components/RecipeSearchbar";
+
 import { type Recipe, PrismaClient } from "@prisma/client";
+import AdvancedRecipeSearch from "~/app/_components/AdvancedRecipeSearch";
 
 export default async function Page({ searchParams }: { searchParams?: any }) {
   const prisma = new PrismaClient();
@@ -23,7 +24,7 @@ export default async function Page({ searchParams }: { searchParams?: any }) {
 
   return (
     <main className="flex flex-col items-center">
-      <RecipeSearchbar labels={allLabelNames} />
+      <AdvancedRecipeSearch labels={allLabelNames} />
       {displayedRecipes && displayedRecipes.length > 0 ? (
         <div className="mt-6 grid h-full w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           {displayedRecipes.map((recipe: Recipe) => (
