@@ -1,22 +1,16 @@
-import { getToken } from "next-auth/jwt";
-import { NextRequest, NextResponse } from "next/server";
+import { withAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
 
-export default async function middleware(req: NextRequest, res: NextResponse) {
-  const token = await getToken({ req });
-  const isAuthenticated = !!token;
+const middleware = withAuth(
+  //Middleware is active when user is authenticated via NextAuth.js
+  function middleware(req) {
+    if (req.nextUrl.pathname.startsWith("/auth/signin")) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+  },
+);
+export const config = {
+  matcher: ["/auth/signin", "/recipe/create", "/recipe/:id/edit"],
+};
 
-  if (req.nextUrl.pathname.startsWith("/auth/signin") && isAuthenticated) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
-
-  if (req.nextUrl.pathname.startsWith("/recipe/create") && !isAuthenticated) {
-    return NextResponse.redirect(new URL("/auth/signin", req.url));
-  }
-
-  if (
-    req.nextUrl.pathname.match(/^\/recipe\/[^\/]+\/edit/) &&
-    !isAuthenticated
-  ) {
-    return NextResponse.redirect(new URL("/auth/signin", req.url));
-  }
-}
+export default middleware;
