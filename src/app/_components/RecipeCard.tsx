@@ -17,7 +17,7 @@ interface RecipeCardProps {
   };
 }
 
-export default async function RecipeCard({ recipe }: RecipeCardProps) {
+export default function RecipeCard({ recipe }: RecipeCardProps) {
   return (
     <Card
       className="group h-48 w-full sm:w-72"
