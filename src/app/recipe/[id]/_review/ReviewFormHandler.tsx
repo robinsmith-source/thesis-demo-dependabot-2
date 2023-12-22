@@ -65,11 +65,15 @@ export default function ReviewFormHandler({
     },
   });
 
-  const onEdit = (data: { rating: number; comment: string | null }) => {
+  const onEdit = (data: {
+    reviewId: string;
+    rating: number;
+    comment: string | null;
+  }) => {
     editMutation.mutate({
+      reviewId: data.reviewId,
       rating: data.rating,
       comment: data.comment ?? "",
-      recipeId: recipeId,
     });
   };
 
@@ -109,7 +113,10 @@ export default function ReviewFormHandler({
     <>
       {mode === Modes.CREATE && <ReviewForm submit={onCreate} formValue={{}} />}
       {mode === Modes.EDIT && submittedReview && (
-        <ReviewForm submit={onEdit} formValue={submittedReview} />
+        <ReviewForm
+          submit={(data) => onEdit({ ...data, reviewId: submittedReview.id })}
+          formValue={submittedReview}
+        />
       )}
       {mode === Modes.VIEW && submittedReview && (
         <ReviewCard

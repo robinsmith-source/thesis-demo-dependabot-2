@@ -8,7 +8,7 @@ import {
   User,
 } from "@nextui-org/react";
 import ReviewRating from "~/app/_components/ReviewRating";
-import { FaTrash } from "react-icons/fa6";
+import { FaPenToSquare, FaTrash } from "react-icons/fa6";
 
 type ReviewCardProps = {
   review: {
@@ -34,21 +34,34 @@ export default function ReviewCard({
 
   return (
     <Card className="w-[36rem]">
-      <CardHeader className="-mb-4 flex justify-between">
+      <CardHeader className="flex items-center justify-between">
         <ReviewRating rating={rating} />
-        {handleDeleteClick && (
-          <Button
-            isIconOnly
-            onPress={() => handleDeleteClick(id)}
-            color="danger"
-          >
-            <FaTrash />
-          </Button>
-        )}
+        <div className="flex gap-2">
+          {handleEditClick && (
+            <Button
+              isIconOnly
+              size="sm"
+              onPress={handleEditClick}
+              color="default"
+            >
+              <FaPenToSquare />
+            </Button>
+          )}
+          {handleDeleteClick && (
+            <Button
+              isIconOnly
+              size="sm"
+              onPress={() => handleDeleteClick(id)}
+              color="danger"
+            >
+              <FaTrash />
+            </Button>
+          )}
+        </div>
       </CardHeader>
       {comment && <CardBody className="px-6">{comment}</CardBody>}
-      <CardFooter className="flex justify-end">
-        {author && (
+      {author && (
+        <CardFooter className="flex justify-end">
           <User
             name={
               <Link
@@ -66,13 +79,8 @@ export default function ReviewCard({
               size: "sm",
             }}
           />
-        )}
-        {handleEditClick && (
-          <Button onPress={handleEditClick} color="secondary">
-            Edit
-          </Button>
-        )}
-      </CardFooter>
+        </CardFooter>
+      )}
     </Card>
   );
 }
