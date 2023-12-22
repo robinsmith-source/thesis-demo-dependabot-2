@@ -20,7 +20,7 @@ interface RecipeCardProps {
 export default async function RecipeCard({ recipe }: RecipeCardProps) {
   return (
     <Card
-      className="h-48 w-72"
+      className="group h-48 w-full sm:w-72"
       isPressable
       isHoverable
       as={NextLink}
@@ -38,7 +38,7 @@ export default async function RecipeCard({ recipe }: RecipeCardProps) {
         src={`https://utfs.io/f/${recipe.images[0]}`}
         alt=""
         aria-hidden
-        className="z-0 h-full w-full bg-center object-cover brightness-[.60]"
+        className="z-0 h-full w-full bg-center object-cover brightness-[.60] transition duration-200 ease-in-out group-hover:scale-110"
       />
       {recipe.labels && (
         <CardFooter className="absolute bottom-1 z-10 flex gap-1">
