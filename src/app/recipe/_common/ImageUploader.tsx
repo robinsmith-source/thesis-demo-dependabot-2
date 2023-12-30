@@ -85,7 +85,7 @@ export default function ImageUploader() {
           </p>
           <Button
             isDisabled={files.length === 0}
-            onClick={() => startUpload(files)}
+            onPress={() => startUpload(files)}
             className="mt-4 "
             color="success"
           >
@@ -114,7 +114,7 @@ export default function ImageUploader() {
                 <div className="absolute inset-0 z-10 grid place-items-center bg-black/20 text-white opacity-0 transition focus-within:opacity-100 hover:opacity-100">
                   <Button
                     isIconOnly
-                    onClick={() => {
+                    onPress={() => {
                       mutation.mutate({
                         key: getValues(`images.${index}`) as string,
                       });

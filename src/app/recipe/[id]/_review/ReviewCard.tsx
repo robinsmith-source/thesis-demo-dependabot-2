@@ -56,7 +56,7 @@ export default function ReviewCard({
           />
         )}
         {handleEditClick && (
-          <Button onClick={handleEditClick} color="secondary">
+          <Button onPress={handleEditClick} color="secondary">
             Edit
           </Button>
         )}

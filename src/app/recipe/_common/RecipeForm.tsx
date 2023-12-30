@@ -166,7 +166,7 @@ export default function RecipeForm({
           <StepCreator />
         </div>
         <Divider className="my-4" />
-        <Button color="success" onClick={methods.handleSubmit(submit)}>
+        <Button color="success" onPress={() => methods.handleSubmit(submit)}>
           Submit
         </Button>
       </form>
