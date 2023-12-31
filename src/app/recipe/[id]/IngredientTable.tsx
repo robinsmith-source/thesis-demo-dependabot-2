@@ -32,15 +32,12 @@ export default function IngredientTable({
   );
 
   const [portionSize, setPortionSize] = useState<number>(1);
-  const [summarizedIngredients, setSummarizedIngredients] = useState(
-    calculateIngredients(ingredients, portionSize),
-  );
   const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>(
     [],
   );
+  const summarizedIngredients = calculateIngredients(ingredients, portionSize);
 
   useEffect(() => {
-    setSummarizedIngredients(calculateIngredients(ingredients, portionSize));
     if (selectedKeys === "all") {
       setSelectedIngredients(summarizedIngredients);
     } else {
@@ -50,9 +47,8 @@ export default function IngredientTable({
         ),
       );
     }
-  }, [selectedKeys, portionSize, ingredients, summarizedIngredients]);
-
-  onSelect(selectedIngredients);
+    onSelect(selectedIngredients);
+  }, [selectedKeys]);
 
   return (
     <>

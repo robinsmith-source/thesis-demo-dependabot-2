@@ -2,7 +2,7 @@
 import ShoppingListSelector from "~/app/_components/ShoppingListSelector";
 import IngredientTable from "~/app/recipe/[id]/IngredientTable";
 import type { RecipeStepIngredient } from "@prisma/client";
-import { type Key, useState } from "react";
+import { type Key, useCallback, useState } from "react";
 import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import type { Ingredient } from "~/utils/IngredientCalculator";
@@ -52,6 +52,11 @@ export default function ShoppingListHandler({
     },
   });
 
+  //TODO: fix build warning "React Hook useCallback has a missing dependency: 'selectedIngredients'.Either include it or remove the dependency array If 'onSelect' changes too often, find the parent component that defines it and wrap that definition in useCallback. "
+  const onSelect = useCallback((selectedIngredients: Ingredient[]) => {
+    setSelectedIngredients(selectedIngredients);
+  }, []);
+
   return (
     <div className="flex max-w-xs flex-col gap-4">
       {isAuthorized && (
@@ -83,7 +88,7 @@ export default function ShoppingListHandler({
       <IngredientTable
         isSelectable={isAuthorized}
         ingredients={ingredients}
-        onSelect={(ingredients) => setSelectedIngredients(ingredients)}
+        onSelect={onSelect}
       />
     </div>
   );
