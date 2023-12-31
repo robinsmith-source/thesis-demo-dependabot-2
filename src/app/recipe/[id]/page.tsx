@@ -11,14 +11,21 @@ import RecipeDeleteHandler from "~/app/recipe/[id]/RecipeDeleteHandler";
 import ShoppingListHandler from "~/app/recipe/[id]/ShoppingListHandler";
 
 export default async function Page({ params }: { params: { id: string } }) {
+  const session = await auth();
   const recipe = await api.recipe.get.query({ id: params.id });
   if (!recipe) {
     notFound();
   }
 
-  const shoppingLists = await api.shoppingList.getAll.query();
+  let shoppingLists = [] as {
+    id: string;
+    name: string;
+  }[];
 
-  const session = await auth();
+  if (session?.user) {
+    shoppingLists = await api.shoppingList.getAll.query();
+  }
+
   console.log(recipe.images);
   return (
     <main>
@@ -62,6 +69,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         </div>
         <ImageCarousel images={recipe.images} />
         <ShoppingListHandler
+          isAuthorized={!!session?.user}
           shoppingLists={shoppingLists}
           ingredients={recipe.steps.flatMap((step) => step.ingredients)}
         />

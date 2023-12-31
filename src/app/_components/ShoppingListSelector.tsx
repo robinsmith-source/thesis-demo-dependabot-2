@@ -1,7 +1,6 @@
 "use client";
 
 import { Autocomplete, AutocompleteItem, Button } from "@nextui-org/react";
-import type { ShoppingList } from "@prisma/client";
 import { type Key, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 
@@ -9,7 +8,10 @@ export default function ShoppingListSelector({
   shoppingLists,
   onChange,
 }: {
-  shoppingLists: ShoppingList[];
+  shoppingLists: {
+    id: string;
+    name: string;
+  }[];
   onChange: (value: string) => void;
 }) {
   const [value, setValue] = useState<Key>();

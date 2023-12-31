@@ -18,10 +18,12 @@ import {
 
 export default function IngredientTable({
   className,
+  isSelectable = false,
   ingredients,
   onSelect,
 }: {
   className?: string;
+  isSelectable?: boolean;
   ingredients: RecipeStepIngredient[];
   onSelect: (selectedIngredients: Ingredient[]) => void;
 }) {
@@ -57,7 +59,7 @@ export default function IngredientTable({
       <Table
         aria-label="Ingredient Table"
         className={`max-w-xs ${className}`}
-        selectionMode="multiple"
+        selectionMode={isSelectable ? "multiple" : "none"}
         selectedKeys={selectedKeys}
         onSelectionChange={(keys) => {
           //TODO: fix ESLint error
