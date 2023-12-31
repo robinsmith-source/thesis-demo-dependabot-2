@@ -25,7 +25,7 @@ CREATE TABLE "ShoppingListItem" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "ShoppingListItem_name_unit_key" ON "ShoppingListItem"("name", "unit");
+CREATE UNIQUE INDEX "ShoppingListItem_name_unit_shoppingListId_key" ON "ShoppingListItem"("name", "unit", "shoppingListId");
 
 -- AddForeignKey
 ALTER TABLE "RecipeLabel" ADD CONSTRAINT "RecipeLabel_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "RecipeLabelCategory"("id") ON DELETE CASCADE ON UPDATE CASCADE;

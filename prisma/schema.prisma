@@ -178,7 +178,7 @@ model ShoppingListItem {
   shoppingList ShoppingList @relation(fields: [shoppingListId], references: [id], onDelete: Cascade)
   shoppingListId String
 
-  @@unique([name, unit])
+  @@unique([name, unit, shoppingListId])
 }
 
 // TODO: Weekly planner
