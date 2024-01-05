@@ -35,7 +35,7 @@ type apiParams = {
 };
 
 // translate parameters
-const createQueryParameters = (params: urlParams) => {
+const createQueryParams = (params: urlParams) => {
   const { name, labels, difficulty } = params;
   const queryParameters: apiParams = { take: 20 };
 
@@ -68,7 +68,7 @@ export default async function Page({
   searchParams?: urlParams;
 }) {
   const prisma = new PrismaClient();
-  const queryParameters = createQueryParameters(searchParams ?? {});
+  const queryParameters = createQueryParams(searchParams ?? {});
 
   //adjust api query with filters provided client components
   const displayedRecipes =

@@ -24,7 +24,7 @@ export default function FilterAccordion({
   categories?: LabelCategory[];
 }) {
   return (
-    <Accordion className="w-full" variant="light" hideIndicator>
+    <Accordion className="w-full mb-2" variant="light" hideIndicator>
       <AccordionItem key="filters" aria-label="filters" title="Search Filters">
         <div className="flex w-full flex-col flex-wrap items-start justify-start">
           <div className="flex w-full flex-row items-center justify-start">
@@ -33,7 +33,7 @@ export default function FilterAccordion({
           </div>
           <div className="flex flex-row items-center justify-start">
             <span className="font-bold text-default-600">Difficulty</span>
-            <Card>
+            <Card className="mt-3 ml-3">
               <DifficultyInput />
             </Card>
           </div>

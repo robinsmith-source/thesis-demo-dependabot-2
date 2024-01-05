@@ -40,10 +40,12 @@ export default function DifficultyInput({
   }
 
   return (
-    <div className="flex w-full flex-col flex-wrap items-center justify-start sm:flex-row">
+    <div className="ml-3 flex w-full flex-col flex-wrap items-center justify-start sm:flex-row">
       <Autocomplete
+        size="sm"
         className="mb-4 mr-2 sm:mb-0 sm:w-1/3 md:w-1/4"
         startContent={<FaTag />}
+        placeholder="Enter or select labels"
         onInputChange={(value: string) => {
           if (
             !labelInput.includes(value) &&
@@ -53,7 +55,6 @@ export default function DifficultyInput({
             const newLabelInput = [...labelInput, value];
             setLabelInput(newLabelInput);
             handleLabelFilter(newLabelInput);
-            console.log("newLabelInput", newLabelInput);
           }
         }}
       >
@@ -67,7 +68,7 @@ export default function DifficultyInput({
             {labels
               ?.filter((label) => label.category.name === category.name)
               .map((label) => (
-                <AutocompleteItem key={label.name}>
+                <AutocompleteItem key={label.name} className="text-foreground-400">
                   {label.name}
                 </AutocompleteItem>
               )) ?? (
@@ -102,7 +103,6 @@ export default function DifficultyInput({
                 );
                 setLabelInput(newLabelInput);
                 handleLabelFilter(newLabelInput);
-                console.log("newLabelInput", newLabelInput);
               }}
             >
               {label}
