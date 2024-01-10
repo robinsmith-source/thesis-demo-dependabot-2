@@ -6,6 +6,7 @@ import ReviewSection from "~/app/recipe/[id]/_review/ReviewSection";
 import { auth } from "auth";
 import { api } from "~/trpc/server";
 import ImageCarousel from "./ImageCarousel";
+import DifficultyChip from "~/app/_components/DifficultyChip";
 import IngredientTable from "./IngredientTable";
 import RecipeStep from "./RecipeStep";
 
@@ -23,10 +24,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         <div>
           <div className="flex items-center gap-x-2">
             <h1 className="text-2xl font-bold">{recipe.name}</h1>
-
-            <span className="capitalize">
-              ({recipe.difficulty.toLowerCase()})
-            </span>
+            <DifficultyChip difficulty={recipe.difficulty} />
 
             {recipe.authorId === session?.user?.id && (
               <Button
