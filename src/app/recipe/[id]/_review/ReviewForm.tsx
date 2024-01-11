@@ -78,7 +78,7 @@ export default function ReviewForm({
         <Button
           color="success"
           onClick={handleSubmit(submit)}
-          disabled={!formState.isValid}
+          isDisabled={!formState.isValid}
         >
           Submit
         </Button>
