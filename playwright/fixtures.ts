@@ -5,6 +5,8 @@ import path from "path";
 import cuid from "cuid";
 import { randomUUID } from "crypto";
 
+const { encode } = await import("@auth/core/jwt");
+
 export * from "@playwright/test";
 export const test = baseTest.extend<{}, { workerStorageState: string }>({
   // Use the same storage state for all tests in this worker.
@@ -56,11 +58,9 @@ export const test = baseTest.extend<{}, { workerStorageState: string }>({
         update: {},
       });
 
-      const { encode } = await import("@auth/core/jwt");
-
-      const token = await encode({
+      const token = encode({
         salt: `test-salt-${id}`,
-        secret: process.env.AUTH_SECRET,
+        secret: process.env.AUTH_SECRET as string,
         maxAge: 1000 * 60 * 60,
         token: {
           name: `Testing ${id}`,
@@ -76,7 +76,7 @@ export const test = baseTest.extend<{}, { workerStorageState: string }>({
       await page.context().addCookies([
         {
           name: "authjs.session-token",
-          value: token,
+          value: await token,
           domain: "localhost",
           path: "/",
           httpOnly: true,
