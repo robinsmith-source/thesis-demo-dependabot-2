@@ -79,7 +79,6 @@ function LoginBar({ session }: { session: Session }) {
 export default function MainNavbar() {
   const { data: session } = useSession();
 
-  // NavbarMenu for small screens
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navbarLinks = [
     { name: "Home", href: "/" },
@@ -90,7 +89,6 @@ export default function MainNavbar() {
   return (
     <Navbar
       maxWidth="xl"
-      className="bg"
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
     >
@@ -120,7 +118,7 @@ export default function MainNavbar() {
             <Link
               as={NextLink}
               href={item.href}
-              className="w-full text-default-600"
+              className="text-default-600"
               size="lg"
             >
               {item.name}
@@ -150,8 +148,8 @@ export default function MainNavbar() {
       </NavbarContent>
 
       <NavbarMenu>
-        {navbarLinks.map((item, index) => (
-          <NavbarMenuItem key={`${index}`}>
+        {navbarLinks.map((item) => (
+          <NavbarMenuItem key={`${item.name}`}>
             <Link
               as={NextLink}
               href={item.href}

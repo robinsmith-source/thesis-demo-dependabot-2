@@ -8,12 +8,10 @@ type QueryPaginationProps = {
     className?: string;
   };
 
-export default function QueryPagination({ pageCount, className = "w-1/3" }: QueryPaginationProps) {
+export default function QueryPagination({ pageCount, className = "" }: QueryPaginationProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
-
-  if (!className) className = "w-1/3";
 
   const initialPage = searchParams.get("page")
     ? parseInt(searchParams.get("page")?.toString() ?? "")
@@ -28,7 +26,7 @@ export default function QueryPagination({ pageCount, className = "w-1/3" }: Quer
 
   return (
     <Pagination
-      variant="bordered"
+      variant="faded"
       className={className}
       showControls
       siblings={2}
