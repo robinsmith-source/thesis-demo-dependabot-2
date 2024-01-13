@@ -11,7 +11,7 @@ export default async function UserLayout({
 }) {
   const user = await api.user.get.query({ id: params.id });
   if (!user) {
-    return <div>404</div>;
+    notFound();
   }
 
   return (
