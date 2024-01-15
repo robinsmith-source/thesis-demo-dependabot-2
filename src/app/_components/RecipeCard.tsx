@@ -4,6 +4,7 @@ import NextImage from "next/image";
 import NextLink from "next/link";
 import { type Prisma } from "@prisma/client";
 import Difficulty from "~/app/_components/Difficulty";
+import RatingDisplay from "~/app/_components/RatingDisplay";
 
 export type RecipeCardProps = Prisma.RecipeGetPayload<{
   select: {
@@ -12,6 +13,7 @@ export type RecipeCardProps = Prisma.RecipeGetPayload<{
     difficulty: true;
     labels: { select: { name: true } };
     images: true;
+    rating: true;
   };
 }>;
 
@@ -31,6 +33,7 @@ export default function RecipeCard({
       href={`/recipe/${recipe.id}`}
     >
       <CardHeader className="absolute top-1 z-10 flex-col !items-start">
+        {recipe.rating && <RatingDisplay size={18} rating={recipe.rating} />}
         <h2 className="text-lg font-semibold text-white">{recipe.name}</h2>
         <Difficulty difficulty={recipe.difficulty} />
       </CardHeader>

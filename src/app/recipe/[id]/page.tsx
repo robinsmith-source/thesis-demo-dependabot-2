@@ -11,6 +11,7 @@ import RecipeStep from "./RecipeStep";
 import RecipeDeleteHandler from "~/app/recipe/[id]/RecipeDeleteHandler";
 import ShoppingListHandler from "~/app/recipe/[id]/ShoppingListHandler";
 import { PortionSizeProvider } from "~/app/recipe/[id]/PortionSizeContext";
+import RatingDisplay from "~/app/_components/RatingDisplay";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const session = await auth();
@@ -41,6 +42,8 @@ export default async function Page({ params }: { params: { id: string } }) {
                 ({recipe.difficulty.toLowerCase()})
               </span>
 
+              {recipe.rating && <RatingDisplay rating={recipe.rating} />}
+
               {recipe.authorId === session?.user?.id && (
                 <>
                   <Button
@@ -63,7 +66,6 @@ export default async function Page({ params }: { params: { id: string } }) {
             </div>
 
             <p>{recipe.description}</p>
-
           </div>
           <ImageCarousel images={recipe.images} />
           <ShoppingListHandler

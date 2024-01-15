@@ -12,8 +12,8 @@ import { utapi } from "~/server/uploadthing";
 export const recipeRouter = createTRPCRouter({
   get: publicProcedure
     .input(z.object({ id: z.string().cuid() }))
-    .query(({ input, ctx }) => {
-      return ctx.db.recipe.findFirst({
+    .query(async ({ input, ctx }) => {
+      const recipe = await ctx.db.recipe.findFirst({
         where: { id: input.id },
         include: {
           steps: {
@@ -30,6 +30,20 @@ export const recipeRouter = createTRPCRouter({
           author: true,
         },
       });
+
+      const reviews = recipe?.reviews ?? [];
+      const totalRatings = reviews.reduce(
+        (sum, review) => sum + (review.rating ?? 0),
+        0,
+      );
+      const rating = reviews.length > 0 ? totalRatings / reviews.length : 0;
+
+      return (
+        recipe && {
+          ...recipe,
+          rating,
+        }
+      );
     }),
 
   getRecipeCards: publicProcedure
@@ -44,7 +58,7 @@ export const recipeRouter = createTRPCRouter({
         labels: z.array(z.string()).optional(),
       }),
     )
-    .query(({ ctx, input }) => {
+    .query(async ({ ctx, input }) => {
       function createLabelQuery(labels: string[]) {
         return {
           AND: labels.map((label) => ({
@@ -57,7 +71,7 @@ export const recipeRouter = createTRPCRouter({
         };
       }
 
-      return ctx.db.recipe.findMany({
+      const recipes = await ctx.db.recipe.findMany({
         orderBy: (() => {
           switch (input.orderBy) {
             case "NEWEST":
@@ -82,7 +96,29 @@ export const recipeRouter = createTRPCRouter({
           difficulty: true,
           labels: { select: { name: true } },
           images: true,
+          reviews: {
+            select: {
+              rating: true,
+            },
+          },
         },
+      });
+
+      return recipes.map((recipe) => {
+        const reviews = recipe?.reviews ?? [];
+        const totalRatings = reviews.reduce(
+          (sum, review) => sum + (review.rating ?? 0),
+          0,
+        );
+        const rating =
+          reviews.length > 0 ? totalRatings / reviews.length : null;
+
+        return (
+          recipe && {
+            ...recipe,
+            rating,
+          }
+        );
       });
     }),
 
