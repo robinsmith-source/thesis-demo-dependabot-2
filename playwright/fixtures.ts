@@ -32,10 +32,6 @@ export const test = baseTest.extend<{}, { workerStorageState: string }>({
 
       // Clear cookies to make sure we don't have any existing sessions.
       await page.context().clearCookies();
-      // Acquire a unique account, for example create a new one.
-      // Alternatively, you can have a list of precreated accounts for testing.
-      // Make sure that accounts are unique, so that multiple team members
-      // can run tests at the same time without interference.
 
       const prisma = new PrismaClient();
 
