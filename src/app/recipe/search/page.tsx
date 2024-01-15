@@ -57,23 +57,22 @@ export default async function Page({
 }: {
   searchParams?: urlParams;
 }) {
-  // get all labels with their categories from DB for autocomplete items
-  const allLabels = await api.recipeLabel.getAll.query();
+  // get all labels and categories from DB for select items and turn them to string arrays
+  const categories = await api.recipeLabelCategory.getAll.query();
+
 
   const queryParameters = createQueryParams(searchParams ?? {});
   const displayedRecipeCards =
     await api.recipe.getRecipeCards.query(queryParameters);
-  const count = await api.recipe.getRecipeCount.query(queryParameters);
 
   // calculate page count for pagination
+  const count = await api.recipe.getRecipeCount.query(queryParameters);
   const pageCount = Math.ceil(Number(count) / (queryParameters.take ?? 0));
 
   return (
     <main className="flex flex-col items-center">
-      <div className="flex w-full flex-row items-center justify-between">
-        <AdvancedRecipeSearch />
-      </div>
-      <FilterAccordion labels={allLabels} />
+      <AdvancedRecipeSearch />
+      <FilterAccordion categories={categories} />
       <RecipeCardsSection recipes={displayedRecipeCards} />
       <QueryPagination pageCount={pageCount} className="mt-2" />
     </main>

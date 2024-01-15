@@ -16,8 +16,6 @@ export default function AdvancedRecipeSearch({
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  if (!className) className = "w-full";
-
   const handleSearch = useDebouncedCallback((searchFilters: string) => {
     const params = new URLSearchParams(searchParams);
     params.set("page", "1");
