@@ -57,8 +57,8 @@ export const shoppingListRouter = createTRPCRouter({
       });
     }),
 
-  getAllTables: protectedProcedure.query(({ ctx }) => {
-    const tables = ctx.db.shoppingList.findMany({
+  getAllTables: protectedProcedure.query(async ({ ctx }) => {
+    const tables = await ctx.db.shoppingList.findMany({
       orderBy: { createdAt: "desc" },
       where: { authorId: ctx.session.user.id },
       include: {
@@ -78,8 +78,8 @@ export const shoppingListRouter = createTRPCRouter({
     return tables;
   }),
 
-  getAllLists: protectedProcedure.query(({ ctx }) => {
-    const lists = ctx.db.shoppingList.findMany({
+  getAllLists: protectedProcedure.query(async ({ ctx }) => {
+    const lists = await ctx.db.shoppingList.findMany({
       orderBy: { createdAt: "desc" },
       where: { authorId: ctx.session.user.id },
       select: {
@@ -222,7 +222,7 @@ export const shoppingListRouter = createTRPCRouter({
         });
       }
 
-      const items = ctx.db.shoppingListItem.findMany({
+      const items = await ctx.db.shoppingListItem.findMany({
         where: {
           id: {
             in: input.items,

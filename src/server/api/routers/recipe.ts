@@ -11,8 +11,8 @@ import { utapi } from "~/server/uploadthing";
 export const recipeRouter = createTRPCRouter({
   get: publicProcedure
     .input(z.object({ id: z.string().cuid() }))
-    .query(({ input, ctx }) => {
-      const recipe = ctx.db.recipe.findFirst({
+    .query(async ({ input, ctx }) => {
+      const recipe = await ctx.db.recipe.findFirst({
         where: { id: input.id },
         include: {
           steps: {

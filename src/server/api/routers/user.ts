@@ -10,8 +10,8 @@ import { TRPCError } from "@trpc/server";
 export const userRouter = createTRPCRouter({
   get: publicProcedure
     .input(z.object({ id: z.string().cuid() }))
-    .query(({ input, ctx }) => {
-      const user = ctx.db.user.findFirst({
+    .query(async ({ input, ctx }) => {
+      const user = await ctx.db.user.findFirst({
         where: { id: input.id },
         include: { recipes: true },
       });
@@ -88,8 +88,8 @@ export const userRouter = createTRPCRouter({
       }
     }),
 
-  getAll: protectedProcedure.query(({ ctx }) => {
-    const users = ctx.db.recipe.findMany({
+  getAll: protectedProcedure.query(async ({ ctx }) => {
+    const users = await ctx.db.recipe.findMany({
       orderBy: { createdAt: "desc" },
     });
 
@@ -105,8 +105,8 @@ export const userRouter = createTRPCRouter({
 
   getFollowers: protectedProcedure
     .input(z.object({ id: z.string().cuid() }))
-    .query(({ input, ctx }) => {
-      const followers = ctx.db.user.findMany({
+    .query(async ({ input, ctx }) => {
+      const followers = await ctx.db.user.findMany({
         where: { following: { some: { id: input.id } } },
       });
 
@@ -122,8 +122,8 @@ export const userRouter = createTRPCRouter({
 
   getFollowing: protectedProcedure
     .input(z.object({ id: z.string().cuid() }))
-    .query(({ input, ctx }) => {
-      const following = ctx.db.user.findMany({
+    .query(async ({ input, ctx }) => {
+      const following = await ctx.db.user.findMany({
         where: { followedBy: { some: { id: input.id } } },
       });
 

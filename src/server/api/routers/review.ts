@@ -61,8 +61,8 @@ export const reviewRouter = createTRPCRouter({
         recipeId: z.string().cuid(),
       }),
     )
-    .query(({ input, ctx }) => {
-      const ownReview = ctx.db.recipeReview.findFirst({
+    .query(async ({ input, ctx }) => {
+      const ownReview = await ctx.db.recipeReview.findFirst({
         where: {
           recipeId: input.recipeId,
           authorId: ctx.session.user.id,
@@ -90,8 +90,8 @@ export const reviewRouter = createTRPCRouter({
         recipeId: z.string().cuid(),
       }),
     )
-    .query(({ input, ctx }) => {
-      const otherReviews = ctx.db.recipeReview.findMany({
+    .query(async ({ input, ctx }) => {
+      const otherReviews = await ctx.db.recipeReview.findMany({
         where: {
           recipeId: input.recipeId,
           authorId: { not: ctx?.session?.user?.id },
