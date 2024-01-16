@@ -31,7 +31,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   }
 
   console.log(recipe.images);
-  const { averageRating } = calculateAverage(recipe.reviews);
+  const { averageRating, totalReviews } = calculateAverage(recipe.reviews);
   return (
     <main className="space-y-6">
       <PortionSizeProvider>
@@ -40,7 +40,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             <div className="flex flex-col items-start justify-center gap-y-1">
               <h1 className="text-2xl font-bold">{recipe.name}</h1>
 
-              {recipe.reviews && <RatingDisplay rating={averageRating} />}
+              <RatingDisplay rating={averageRating} total={totalReviews} />
 
               <span className="capitalize">
                 ({recipe.difficulty.toLowerCase()})

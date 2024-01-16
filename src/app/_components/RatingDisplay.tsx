@@ -13,18 +13,28 @@ export default function RatingDisplay({
   const fracRating = rating - intRating;
 
   return (
-    <ul className="flex gap-1">
-      {[1, 2, 3, 4, 5].map((index) => (
-        <li key={index}>
-          {index <= intRating ? (
-            <FaStar className="fill-orange-400" size={size} />
-          ) : index - 1 === intRating && fracRating >= 0.5 ? (
-            <FaStarHalfAlt className="fill-orange-400" size={size} />
-          ) : (
-            <FaRegStar size={size} />
-          )}
-        </li>
-      ))}
-    </ul>
+    <div className="flex justify-center gap-x-2">
+      <ul className="flex gap-1">
+        {[1, 2, 3, 4, 5].map((index) => (
+          <li key={index}>
+            {index <= intRating ? (
+              <FaStar className="fill-orange-400" size={size} />
+            ) : index - 1 === intRating && fracRating >= 0.5 ? (
+              <FaStarHalfAlt className="fill-orange-400" size={size} />
+            ) : (
+              <FaRegStar size={size} />
+            )}
+          </li>
+        ))}
+      </ul>
+      {!!total && (
+        <>
+          <strong className="font-semibold">{rating.toFixed(2)}</strong>
+          <span className="font-light">
+            ({total} {total === 1 ? "Review" : "Reviews"})
+          </span>
+        </>
+      )}
+    </div>
   );
 }
