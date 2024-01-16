@@ -36,9 +36,7 @@ export default function RecipeCard({
       href={`/recipe/${recipe.id}`}
     >
       <CardHeader className="absolute top-1 z-10 flex-col !items-start">
-        {recipe.reviews && (
-          <RatingDisplay size={18} rating={averageRating} isMinimalistic />
-        )}
+        <RatingDisplay size={18} rating={averageRating} isMinimalistic />
         <h2 className="text-lg font-semibold text-white">{recipe.name}</h2>
         <Difficulty difficulty={recipe.difficulty} />
       </CardHeader>
