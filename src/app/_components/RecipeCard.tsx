@@ -2,25 +2,15 @@ import { Card, CardHeader } from "@nextui-org/card";
 import { CardFooter, Chip, Image } from "@nextui-org/react";
 import NextImage from "next/image";
 import NextLink from "next/link";
-import { type Prisma } from "@prisma/client";
 import DifficultyChip from "~/app/_components/DifficultyChip";
-
-export type RecipeCardProps = Prisma.RecipeGetPayload<{
-  select: {
-    id: true;
-    name: true;
-    difficulty: true;
-    labels: { select: { name: true } };
-    images: true;
-  };
-}>;
+import { type RouterOutputs } from "~/trpc/shared";
 
 export default function RecipeCard({
   className,
   recipe,
 }: {
   className?: string;
-  recipe: RecipeCardProps;
+  recipe: RouterOutputs["recipe"]["getCards"][0];
 }) {
   return (
     <Card

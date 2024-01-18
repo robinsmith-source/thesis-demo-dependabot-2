@@ -5,7 +5,11 @@ import RecipeForm, { type RecipeFormValues } from "../../_common/RecipeForm";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-export default function FormHandler({ recipe }: { recipe: RecipeFormValues }) {
+export default function EditFormHandler({
+  recipe,
+}: {
+  recipe: RecipeFormValues;
+}) {
   const router = useRouter();
   const mutation = api.recipe.update.useMutation({
     onSuccess: (id) => {

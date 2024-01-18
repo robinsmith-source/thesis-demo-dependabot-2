@@ -15,7 +15,6 @@ import {
 } from "@nextui-org/react";
 import NextLink from "next/link";
 import type { Session } from "next-auth";
-import { useSession } from "next-auth/react";
 import ThemeSwitcher from "~/app/_components/ThemeSwitcher";
 import NextImage from "next/image";
 
@@ -71,9 +70,7 @@ function LoginBar({ session }: { session: Session }) {
   );
 }
 
-export default function MainNavbar() {
-  const { data: session } = useSession();
-
+export default function MainNavbar({ session }: { session: Session | null }) {
   return (
     <Navbar maxWidth="xl" className="bg">
       <NavbarBrand>

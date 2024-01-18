@@ -2,7 +2,7 @@
 
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import { type Key, useState } from "react";
-import ShoppingListFormHandler from "~/app/_components/ShoppingListFormHandler";
+import ShoppingListFormHandler from "~/app/shopping-list/ShoppingListFormHandler";
 import { Modes } from "~/app/lib/shoppingListModes";
 
 export default function ShoppingListSelector({

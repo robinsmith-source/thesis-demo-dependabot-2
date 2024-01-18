@@ -1,4 +1,5 @@
-import RecipeCard, { type RecipeCardProps } from "~/app/_components/RecipeCard";
+import RecipeCard from "~/app/_components/RecipeCard";
+import { type RouterOutputs } from "~/trpc/shared";
 
 export default function RecipeCardsSection({
   className,
@@ -7,7 +8,7 @@ export default function RecipeCardsSection({
 }: {
   className?: string;
   layout?: "grid" | "flex";
-  recipes: RecipeCardProps[];
+  recipes: RouterOutputs["recipe"]["getCards"];
 }) {
   return (
     <section
