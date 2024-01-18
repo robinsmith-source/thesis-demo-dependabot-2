@@ -26,10 +26,6 @@ export default async function Page({ params }: { params: { id: string } }) {
     ? await api.shoppingList.getAllLists.query()
     : [];
 
-  if (session?.user) {
-    shoppingLists = await api.shoppingList.getAllLists.query();
-  }
-
   console.log(recipe.images);
   const { averageRating, totalReviews } = calculateAverage(recipe.reviews);
   return (

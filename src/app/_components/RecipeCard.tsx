@@ -35,10 +35,12 @@ export default function RecipeCard({
       as={NextLink}
       href={`/recipe/${recipe.id}`}
     >
-      <CardHeader className="absolute top-1 z-10 flex-col !items-start">
-        <RatingDisplay size={18} rating={averageRating} isMinimalistic />
+      <CardHeader className="absolute top-1 z-10 flex-col !items-start space-y-1">
+        <div className="flex w-full justify-between gap-2">
+          <DifficultyChip difficulty={recipe.difficulty} />
+          <RatingDisplay size={20} rating={averageRating} isMinimalistic />
+        </div>
         <h2 className="text-lg font-semibold text-white">{recipe.name}</h2>
-        <DifficultyChip difficulty={recipe.difficulty} />
       </CardHeader>
 
       <Image
@@ -59,6 +61,7 @@ export default function RecipeCard({
               {label.name}
             </Chip>
           ))}
+          {recipe.labels.length > 3 && <Chip>+{recipe.labels.length - 3}</Chip>}
         </CardFooter>
       )}
     </Card>

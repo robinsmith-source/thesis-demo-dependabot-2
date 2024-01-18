@@ -22,9 +22,11 @@ export default function RatingDisplay({
             className={rating ? "fill-orange-400" : "fill-gray-400"}
             size={size}
           />
-          <strong className="font-semibold">
-            {rating > 0 ? rating.toFixed(2) : rating}
-          </strong>
+          {rating > 0 && (
+            <strong className="font-semibold text-white">
+              {rating > 0 ? rating.toFixed(1) : rating}
+            </strong>
+          )}
         </div>
       ) : (
         <>
@@ -43,7 +45,7 @@ export default function RatingDisplay({
           </ul>
           {!!total && (
             <>
-              <strong className="font-semibold">{rating.toFixed(2)}</strong>
+              <strong className="font-semibold">{rating.toFixed(1)}</strong>
               <span className="font-light">
                 ({total} {total === 1 ? "Review" : "Reviews"})
               </span>
