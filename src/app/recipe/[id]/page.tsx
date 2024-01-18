@@ -12,6 +12,8 @@ import RecipeAuthorSection from "./RecipeAuthorSection";
 import RecipeDeleteHandler from "~/app/recipe/[id]/RecipeDeleteHandler";
 import ShoppingListHandler from "~/app/recipe/[id]/ShoppingListHandler";
 import { PortionSizeProvider } from "~/app/recipe/[id]/PortionSizeContext";
+import RatingDisplay from "~/app/_components/RatingDisplay";
+import { calculateAverage } from "~/utils/RatingCalculator";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const session = await auth();
@@ -24,15 +26,20 @@ export default async function Page({ params }: { params: { id: string } }) {
     ? await api.shoppingList.getAllLists.query()
     : [];
 
+  console.log(recipe.images);
+  const { averageRating, totalReviews } = calculateAverage(recipe.reviews);
   return (
     <main className="space-y-6">
       <PortionSizeProvider>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <div className="flex items-center gap-x-2">
-              <h1 className="text-2xl font-bold">{recipe.name}</h1>
+            <div className="flex flex-col items-start justify-center gap-2">
+              <div className="flex items-center justify-center gap-3">
+                <h1 className="text-3xl font-bold">{recipe.name}</h1>
+                <DifficultyChip difficulty={recipe.difficulty} />
+              </div>
 
-              <DifficultyChip difficulty={recipe.difficulty} />
+              <RatingDisplay rating={averageRating} total={totalReviews} />
 
               {recipe.authorId === session?.user?.id && (
                 <>
