@@ -6,8 +6,9 @@ import ReviewSection from "./_review/ReviewSection";
 import { auth } from "auth";
 import { api } from "~/trpc/server";
 import ImageCarousel from "./ImageCarousel";
-import RecipeAuthorSection from "./RecipeAuthorSection";
+import DifficultyChip from "~/app/_components/DifficultyChip";
 import RecipeStep from "./RecipeStep";
+import RecipeAuthorSection from "./RecipeAuthorSection";
 import RecipeDeleteHandler from "~/app/recipe/[id]/RecipeDeleteHandler";
 import ShoppingListHandler from "~/app/recipe/[id]/ShoppingListHandler";
 import { PortionSizeProvider } from "~/app/recipe/[id]/PortionSizeContext";
@@ -21,10 +22,9 @@ export default async function Page({ params }: { params: { id: string } }) {
     notFound();
   }
 
-  let shoppingLists = [] as {
-    id: string;
-    name: string;
-  }[];
+  const shoppingLists = session?.user
+    ? await api.shoppingList.getAllLists.query()
+    : [];
 
   if (session?.user) {
     shoppingLists = await api.shoppingList.getAllLists.query();
@@ -41,10 +41,7 @@ export default async function Page({ params }: { params: { id: string } }) {
               <h1 className="text-2xl font-bold">{recipe.name}</h1>
 
               <RatingDisplay rating={averageRating} total={totalReviews} />
-
-              <span className="capitalize">
-                ({recipe.difficulty.toLowerCase()})
-              </span>
+              <DifficultyChip difficulty={recipe.difficulty} />
 
               {recipe.authorId === session?.user?.id && (
                 <>
@@ -93,7 +90,9 @@ export default async function Page({ params }: { params: { id: string } }) {
       </PortionSizeProvider>
       <div className="mt-4 flex justify-center gap-2">
         {recipe.tags.map((tag) => (
-          <Chip key={tag}>#{tag}</Chip>
+          <Chip color="secondary" key={tag} variant="flat">
+            #{tag}
+          </Chip>
         ))}
       </div>
 

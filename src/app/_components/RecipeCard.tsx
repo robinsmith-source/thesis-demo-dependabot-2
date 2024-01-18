@@ -3,7 +3,7 @@ import { CardFooter, Chip, Image } from "@nextui-org/react";
 import NextImage from "next/image";
 import NextLink from "next/link";
 import { type Prisma } from "@prisma/client";
-import Difficulty from "~/app/_components/Difficulty";
+import DifficultyChip from "~/app/_components/DifficultyChip";
 import RatingDisplay from "~/app/_components/RatingDisplay";
 import { calculateAverage } from "~/utils/RatingCalculator";
 
@@ -38,7 +38,7 @@ export default function RecipeCard({
       <CardHeader className="absolute top-1 z-10 flex-col !items-start">
         <RatingDisplay size={18} rating={averageRating} isMinimalistic />
         <h2 className="text-lg font-semibold text-white">{recipe.name}</h2>
-        <Difficulty difficulty={recipe.difficulty} />
+        <DifficultyChip difficulty={recipe.difficulty} />
       </CardHeader>
 
       <Image
