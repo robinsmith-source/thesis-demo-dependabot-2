@@ -13,7 +13,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import DifficultyInput from "./DifficultyInput";
 import LabelSelect from "./LabelSelect";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 type AdvancedRecipeSearchProps = {
@@ -26,6 +26,20 @@ export default function AdvancedRecipeSearch({
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 640);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      setIsSmallScreen(width < 640);
+    };
+    
+    window.addEventListener('resize', handleResize);
+  return () => {
+    window.removeEventListener('resize', handleResize);
+  };
+}, []);
 
   const [filtersCollapsed, setFiltersCollapsed] = useState(true);
 
@@ -65,10 +79,12 @@ export default function AdvancedRecipeSearch({
             size="lg"
             variant="flat"
             color="secondary"
-            startContent={<FaFilter />}
+            startContent={<FaFilter className="hidden sm:inline" />}
+            isIconOnly={isSmallScreen}
             onClick={() => setFiltersCollapsed(!filtersCollapsed)}
           >
-            Filters
+            <span className="hidden md:inline">Filters</span>
+            <FaFilter className="md:hidden" />
           </Button>
           <Input
             type="text"
@@ -131,25 +147,23 @@ export default function AdvancedRecipeSearch({
           }}
           transition={{ duration: 0.2 }}
         >
-          {!filtersCollapsed ? (
-            <div className="flex w-full flex-col">
-              <Divider className="w-full bg-background-400" />
-              <div className="mt-2 flex w-full flex-row items-center justify-between">
-                <div className="flex flex-row items-center justify-start md:w-1/2">
-                  <span className="font-bold text-default-600">Difficulty</span>
-                  <DifficultyInput />
-                </div>
-                <div className="mr-5 flex flex-row items-center justify-start md:w-1/2">
-                  <span className="font-bold text-default-600">Labels</span>
-                  <LabelSelect
-                    categories={categories}
-                    disabled={filtersCollapsed}
-                    className="w-full lg:ml-2 lg:w-2/3"
-                  />
-                </div>
+          <div className="flex w-full flex-col">
+            <Divider className="w-full bg-background-400" />
+            <div className="mt-2 flex w-full flex-row items-center justify-between">
+              <div className="flex flex-row items-center justify-start md:w-1/2">
+                <span className="font-bold text-default-600">Difficulty</span>
+                <DifficultyInput />
+              </div>
+              <div className="mr-5 flex flex-row items-center justify-start md:w-1/2">
+                <span className="font-bold text-default-600">Labels</span>
+                <LabelSelect
+                  categories={categories}
+                  disabled={filtersCollapsed}
+                  className="w-full lg:ml-2 lg:w-2/3"
+                />
               </div>
             </div>
-          ) : null}
+          </div>
         </motion.div>
       </Card>
     </div>
