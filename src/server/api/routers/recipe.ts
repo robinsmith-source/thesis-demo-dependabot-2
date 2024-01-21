@@ -121,14 +121,13 @@ export const recipeRouter = createTRPCRouter({
     }),
 
   getRecipeCount: publicProcedure
-  .input(
+    .input(
       z.object({
         take: z.number().min(1).max(50),
         skip: z.number().min(0).optional(),
         name: z.string().optional(),
         difficulty: z.enum(["EASY", "MEDIUM", "HARD", "EXPERT"]).optional(),
         excludeRecipeId: z.string().cuid().optional(),
-        orderBy: z.enum(["NEWEST", "OLDEST"]).optional(),
         authorId: z.string().cuid().optional(),
         tags: z.array(z.string()).optional(),
         labels: z.array(z.string()).optional(),

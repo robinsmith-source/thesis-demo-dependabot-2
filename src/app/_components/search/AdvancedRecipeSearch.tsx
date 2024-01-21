@@ -56,6 +56,7 @@ export default function AdvancedRecipeSearch({
   const sortOptions = [
     { label: "Newest", value: "NEWEST" },
     { label: "Oldest", value: "OLDEST" },
+    { label: "Rating", value: "RATING"}
   ];
   const [selectedSorting, setSelectedSorting] = useState([
     searchParams.get("order") ?? "NEWEST",
