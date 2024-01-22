@@ -84,19 +84,15 @@ export default function AdvancedRecipeSearch({
           transition={{ duration: 0.2 }}
         >
           <div className="flex w-full flex-col">
-            <div className="mt-2 flex w-full flex-row items-center justify-between">
-              <div className="flex flex-row items-center justify-start md:w-1/2">
+            <div className="mt-2 flex w-full flex-row items-center">
                 <span className="font-bold text-default-600">Difficulty</span>
                 <DifficultyInput />
-              </div>
-              <div className="mr-5 flex flex-row items-center justify-start md:w-1/2">
-                <span className="font-bold text-default-600">Labels</span>
-                <LabelSelect
-                  categories={categories}
-                  disabled={filtersCollapsed}
-                  className="w-full lg:ml-2 lg:w-2/3"
-                />
-              </div>
+              <span className="font-bold text-default-600">Labels</span>
+              <LabelSelect
+                categories={categories}
+                disabled={filtersCollapsed}
+                className="w-full lg:ml-2 lg:w-2/3"
+              />
             </div>
           </div>
         </motion.div>
