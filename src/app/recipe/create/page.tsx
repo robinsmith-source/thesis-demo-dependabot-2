@@ -1,38 +1,8 @@
-"use client";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import { api } from "~/trpc/react";
-import RecipeForm, { type RecipeFormValues } from "../_common/RecipeForm";
+import CreateFormHandler from "~/app/recipe/create/CreateFormHandler";
+import { auth } from "auth";
 
-export default function RecipeCreate() {
-  const router = useRouter();
+export default async function RecipeCreate() {
+  const session = await auth();
 
-  const mutation = api.recipe.create.useMutation({
-    onSuccess: (id) => {
-      toast.success("Recipe created!");
-      router.push(`/recipe/${id}`);
-    },
-  });
-
-  const onSubmit = (data: RecipeFormValues) => {
-    mutation.mutate({
-      name: data.name,
-      description: data.description,
-      difficulty: data.difficulty,
-      tags: data.tags,
-      images: data.images,
-      steps: data.steps.map((step) => ({
-        description: step.description,
-        duration: step.duration,
-        stepType: step.stepType,
-        ingredients: step.ingredients.map((ingredient) => ({
-          name: ingredient.name,
-          quantity: ingredient.quantity,
-          unit: ingredient.unit,
-        })),
-      })),
-    });
-  };
-
-  return <RecipeForm submit={onSubmit} formValue={{}} />;
+  return <CreateFormHandler userId={session?.user?.id} />;
 }

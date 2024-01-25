@@ -14,10 +14,9 @@ import {
   NavbarItem,
 } from "@nextui-org/react";
 import type { Session } from "next-auth";
-import { useSession } from "next-auth/react";
+import ThemeSwitcher from "~/app/_components/ThemeSwitcher";
 import NextImage from "next/image";
 import NextLink from "next/link";
-import ThemeSwitcher from "~/app/_components/ThemeSwitcher";
 
 function LoginBar({ session }: { session: Session }) {
   if (!session?.user) return null;
@@ -78,9 +77,7 @@ function LoginBar({ session }: { session: Session }) {
   );
 }
 
-export default function MainNavbar() {
-  const { data: session } = useSession();
-
+export default function MainNavbar({ session }: { session: Session | null }) {
   return (
     <Navbar maxWidth="xl" className="bg">
       <NavbarBrand>
