@@ -1,9 +1,9 @@
-import { api } from "~/trpc/server";
-import { Button, Card, CardBody, Divider, Image } from "@nextui-org/react";
+import { Button, Card, CardBody, Image } from "@nextui-org/react";
 import NextImage from "next/image";
+import NextLink from "next/link";
 import RecipeCardsSection from "~/app/_components/RecipeCardsSection";
 import { FadeIn } from "~/app/lib/animations/FadeIn";
-import NextLink from "next/link";
+import { api } from "~/trpc/server";
 
 export const dynamic = "force-dynamic";
 
@@ -28,7 +28,7 @@ export default async function Home() {
                   <h1 className="text-5xl md:text-7xl">
                     Welcome to{" "}
                     <span className="bg-gradient-to-r from-primary-500 to-accent bg-clip-text font-bold tracking-tight text-transparent">
-                      Goose Chef
+                      GooseChef
                     </span>
                     !
                   </h1>
@@ -49,20 +49,19 @@ export default async function Home() {
                       size="lg"
                       variant="solid"
                       as={NextLink}
-                      //TODO: insert link to search page
-                      href="/"
+                      href="/recipe/create"
                     >
-                      Explore Recipes
-                    </Button>{" "}
+                      Create Recipe
+                    </Button>
                     <Button
                       className="mt-8"
                       color="primary"
                       size="lg"
-                      variant="faded"
+                      variant="ghost"
                       as={NextLink}
-                      href="/recipe/create"
+                      href="/shopping-list"
                     >
-                      Create Recipe
+                      Shopping List
                     </Button>
                   </div>
                 </div>
