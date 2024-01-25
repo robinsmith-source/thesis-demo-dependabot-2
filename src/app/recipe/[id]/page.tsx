@@ -1,20 +1,20 @@
 import { Button, Chip, Divider } from "@nextui-org/react";
-import { auth } from "auth";
 import NextLink from "next/link";
 import { notFound } from "next/navigation";
 import { FaPenToSquare } from "react-icons/fa6";
+import ReviewSection from "./_review/ReviewSection";
+import { auth } from "auth";
+import { api } from "~/trpc/server";
+import ImageCarousel from "./ImageCarousel";
 import DifficultyChip from "~/app/_components/DifficultyChip";
-import RatingDisplay from "~/app/_components/RatingDisplay";
-import { PortionSizeProvider } from "~/app/recipe/[id]/PortionSizeContext";
+import RecipeStep from "./RecipeStep";
+import RecipeAuthorSection from "./RecipeAuthorSection";
 import RecipeDeleteHandler from "~/app/recipe/[id]/RecipeDeleteHandler";
 import ShoppingListHandler from "~/app/recipe/[id]/ShoppingListHandler";
-import { api } from "~/trpc/server";
+import { PortionSizeProvider } from "~/app/recipe/[id]/PortionSizeContext";
+import RatingDisplay from "~/app/_components/RatingDisplay";
 import { calculateAverage } from "~/utils/RatingCalculator";
-import ImageCarousel from "./ImageCarousel";
-import RecipeAuthorSection from "./RecipeAuthorSection";
 import RecipeSaveButton from "./RecipeSaveButton";
-import RecipeStep from "./RecipeStep";
-import ReviewSection from "./_review/ReviewSection";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const session = await auth();
@@ -55,7 +55,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             </div>
             <RatingDisplay rating={averageRating} total={totalReviews} />
           </div>
-          <div className="my-2 flex gap-2">
+          <div className="my-2 flex flex-wrap gap-2">
             {recipe.labels.map((label) => (
               <Chip key={label.id}>{label.name}</Chip>
             ))}
@@ -64,8 +64,12 @@ export default async function Page({ params }: { params: { id: string } }) {
           <p>{recipe.description}</p>
           <Divider className="my-4" />
 
-          <div className="flex flex-col items-center justify-center gap-6 md:flex-row md:justify-between">
-            <ImageCarousel images={recipe.images} className="md:order-1" />
+          <div
+            className={`flex flex-col items-center justify-center gap-6 md:flex-row md:justify-evenly md:gap-12`}
+          >
+            {recipe.images.length > 0 && (
+              <ImageCarousel images={recipe.images} className="md:order-1" />
+            )}
             <ShoppingListHandler
               isAuthorized={!!session?.user}
               shoppingLists={shoppingLists}
@@ -90,7 +94,6 @@ export default async function Page({ params }: { params: { id: string } }) {
           </table>
         </div>
       </PortionSizeProvider>
-
       {session?.user && (
         <RecipeSaveButton
           recipeId={recipe.id}
@@ -98,8 +101,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           savedCount={recipe._count.savedUsers}
         />
       )}
-
-      <div className="mt-4 flex justify-center gap-2">
+      <div className="mt-4 flex flex-wrap justify-center gap-2">
         {recipe.tags.map((tag) => (
           <Chip color="secondary" key={tag} variant="flat">
             #{tag}
