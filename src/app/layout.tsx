@@ -3,17 +3,17 @@ import "~/styles/globals.css";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 
-import { TRPCReactProvider } from "~/trpc/react";
-import React from "react";
-import { Providers } from "~/app/providers";
-import MainNavbar from "~/app/_components/MainNavbar";
-import Footer from "~/app/_components/Footer";
-import SessionProvider from "~/app/_components/SessionProvider";
-import { auth } from "auth";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
-import { extractRouterConfig } from "uploadthing/server";
-import { chefFileRouter } from "~/app/api/uploadthing/core";
+import { auth } from "auth";
+import React from "react";
 import { Toaster } from "react-hot-toast";
+import { extractRouterConfig } from "uploadthing/server";
+import Footer from "~/app/_components/Footer";
+import MainNavbar from "~/app/_components/MainNavbar";
+import SessionProvider from "~/app/_components/SessionProvider";
+import { chefFileRouter } from "~/app/api/uploadthing/core";
+import { Providers } from "~/app/providers";
+import { TRPCReactProvider } from "~/trpc/react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -37,7 +37,7 @@ export default async function RootLayout({
     //Currently there is no better solution than suppressing the error message: https://github.com/pacocoursey/next-themes/issues/169
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`font-sans ${inter.variable} min-h-screen bg-background  text-foreground`}
+        className={`font-sans ${inter.variable} flex min-h-screen flex-col justify-between bg-background text-foreground`}
       >
         <NextSSRPlugin routerConfig={extractRouterConfig(chefFileRouter)} />
         <SessionProvider session={session}>
@@ -49,9 +49,9 @@ export default async function RootLayout({
                 {children}
               </div>
             </TRPCReactProvider>
-            <Footer />
           </Providers>
         </SessionProvider>
+        <Footer />
       </body>
     </html>
   );
