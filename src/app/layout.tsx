@@ -43,7 +43,7 @@ export default async function RootLayout({
         <SessionProvider session={session}>
           <Providers>
             <TRPCReactProvider headers={headers()}>
-              <div className="flex min-h-screen flex-col justify-between gap-4">
+              <div className="flex min-h-screen flex-col justify-between">
                 <div>
                   <MainNavbar />
                   <div className="mx-auto max-w-screen-xl p-8">
