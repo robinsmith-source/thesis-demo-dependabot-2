@@ -44,9 +44,6 @@ yarn-error.log*
 # Jetbrain IDEs
 .idea
 
-# vscode
-.vscode
-
 # playwright
 /test-results/
 /playwright-report/
