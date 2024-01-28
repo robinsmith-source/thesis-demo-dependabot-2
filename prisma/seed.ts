@@ -106,8 +106,8 @@ async function seedEasterEgg() {
               "Deswegen machen wa des ganze in UML",
             difficulty: "MEDIUM",
             images: [
-              "41ddc442-6796-4023-bd5f-c512f9d08257-1nq2cb.png",
               "e8b55680-bc74-49a8-b869-22e92e98a998-1nq2cb.png",
+              "41ddc442-6796-4023-bd5f-c512f9d08257-1nq2cb.png",
             ],
             labels: {
               connect: [
