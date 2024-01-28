@@ -17,11 +17,10 @@ import {
   NavbarMenuItem,
   NavbarMenuToggle,
 } from "@nextui-org/react";
-import NextLink from "next/link";
 import type { Session } from "next-auth";
-import { useSession } from "next-auth/react";
 import ThemeSwitcher from "~/app/_components/ThemeSwitcher";
 import NextImage from "next/image";
+import NextLink from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 
@@ -58,11 +57,18 @@ function LoginBar({ session }: { session: Session }) {
         >
           My Profile
         </DropdownItem>
+        <DropdownItem
+          as={NextLink}
+          key="saved"
+          href={`/user/${session.user.id}/saved`}
+        >
+          Saved Recipes
+        </DropdownItem>
         <DropdownItem as={NextLink} key="create-recipe" href={`/recipe/create`}>
           Create Recipe
         </DropdownItem>
         <DropdownItem as={NextLink} key="shopping-list" href={`/shopping-list`}>
-          Shopping list
+          Shopping List
         </DropdownItem>
         <DropdownItem
           as={NextLink}
@@ -88,6 +94,7 @@ export default function MainNavbar() {
     { name: "Users", href: "/user/search" },
   ];
 
+export default function MainNavbar({ session }: { session: Session | null }) {
   return (
     <Navbar
       maxWidth="xl"
