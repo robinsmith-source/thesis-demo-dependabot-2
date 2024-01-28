@@ -71,7 +71,7 @@ export default function ShoppingListHandler({
               onChange={(listId) => setShoppingListId(listId)}
             />
             <Button
-              onClick={handleAddItem}
+              onPress={() => handleAddItem}
               className="w-full"
               isDisabled={
                 !shoppingListId ||

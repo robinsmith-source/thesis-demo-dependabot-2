@@ -4,6 +4,7 @@ import { api } from "~/trpc/react";
 import RecipeForm, { type RecipeFormValues } from "../_common/RecipeForm";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import type { RouterInputs } from "~/trpc/shared";
 
 export default function CreateFormHandler() {
   const router = useRouter();
@@ -37,7 +38,7 @@ export default function CreateFormHandler() {
           quantity: ingredient.quantity,
           unit: ingredient.unit,
         })),
-      })),
+      })) as RouterInputs["recipe"]["create"]["steps"],
     });
   };
 
