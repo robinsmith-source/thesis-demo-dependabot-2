@@ -83,10 +83,12 @@ export default function AdvancedRecipeSearch({
           }}
           transition={{ duration: 0.2 }}
         >
-          <div className="flex w-full flex-col">
-            <div className="mt-2 flex w-full flex-row items-center">
-                <span className="font-bold text-default-600">Difficulty</span>
-                <DifficultyInput />
+          <div className="mt-2 flex w-full flex-col items-center space-y-2 md:flex-row">
+            <div className="flex w-full flex-row items-center space-x-2">
+              <span className="font-bold text-default-600">Difficulty</span>
+              <DifficultyInput />
+            </div>
+            <div className="flex w-full flex-row items-center space-x-2">
               <span className="font-bold text-default-600">Labels</span>
               <LabelSelect
                 categories={categories}
