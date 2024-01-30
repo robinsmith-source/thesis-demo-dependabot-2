@@ -2,6 +2,7 @@
 import {
   Button,
   Card,
+  CardHeader,
   CardBody,
   CardFooter,
   Textarea,
@@ -10,7 +11,6 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import RatingInput from "./RatingInput";
-import { CardHeader } from "@nextui-org/card";
 import type { RecipeReview } from "@prisma/client";
 
 export default function ReviewForm({
