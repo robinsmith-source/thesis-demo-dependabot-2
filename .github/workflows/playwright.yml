@@ -30,6 +30,11 @@ jobs:
       UPLOADTHING_APP_ID: ${{ secrets.UPLOADTHING_APP_ID }}
     steps:
       - uses: actions/checkout@v4
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
       - uses: pnpm/action-setup@v2
         with:
           version: 8

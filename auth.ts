@@ -19,6 +19,7 @@ export const {
   session: {
     strategy: "jwt",
   },
+  // @ts-expect-error
   providers: [Discord],
   adapter: PrismaAdapter(db),
   pages: {
@@ -35,7 +36,6 @@ export const {
     session: async ({ session, token }) => {
       // @ts-expect-error
       session.user.id = token.sub;
-      console.log(token);
       return session;
     },
   },
