@@ -118,6 +118,9 @@ devDependencies:
   jiti:
     specifier: ^1.21.0
     version: 1.21.0
+  playwright:
+    specifier: ^1.41.1
+    version: 1.41.1
   postcss:
     specifier: ^8.4.27
     version: 8.4.33
@@ -149,7 +152,7 @@ packages:
     engines: {node: '>=10'}
 
   /@auth/core@0.18.4(nodemailer@6.9.8):
-    resolution: { integrity: sha512-GsNhsP1xE/3FoNS3dVkPjqRljLNJ4iyL2OLv3klQGNvw3bMpROFcK4lqhx7+pPHiamnVaYt2vg1xbB+lsNaevg== }
+    resolution: {integrity: sha512-GsNhsP1xE/3FoNS3dVkPjqRljLNJ4iyL2OLv3klQGNvw3bMpROFcK4lqhx7+pPHiamnVaYt2vg1xbB+lsNaevg==}
     peerDependencies:
       nodemailer: ^6.8.0
     peerDependenciesMeta:
@@ -4645,7 +4648,7 @@ packages:
     dev: true
 
   /next-auth@5.0.0-beta.4(next@14.1.0)(nodemailer@6.9.8)(react@18.2.0):
-    resolution: { integrity: sha512-vgocjvwPA8gxd/zrIP/vr9lJ/HeNe+C56lPP1D3sdyenHt8KncQV6ro7q0xCsDp1fcOKx7WAWVZH5o8aMxDzgw== }
+    resolution: {integrity: sha512-vgocjvwPA8gxd/zrIP/vr9lJ/HeNe+C56lPP1D3sdyenHt8KncQV6ro7q0xCsDp1fcOKx7WAWVZH5o8aMxDzgw==}
     peerDependencies:
       next: ^14
       nodemailer: ^6.6.5
@@ -4892,12 +4895,28 @@ packages:
     hasBin: true
     dev: true
 
+  /playwright-core@1.41.1:
+    resolution: {integrity: sha512-/KPO5DzXSMlxSX77wy+HihKGOunh3hqndhqeo/nMxfigiKzogn8kfL0ZBDu0L1RKgan5XHCPmn6zXd2NUJgjhg==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dev: true
+
   /playwright@1.41.0:
     resolution: {integrity: sha512-XOsfl5ZtAik/T9oek4V0jAypNlaCNzuKOwVhqhgYT3os6kH34PzbRb74F0VWcLYa5WFdnmxl7qyAHBXvPv7lqQ==}
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
       playwright-core: 1.41.0
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: true
+
+  /playwright@1.41.1:
+    resolution: {integrity: sha512-gdZAWG97oUnbBdRL3GuBvX3nDDmUOuqzV/D24dytqlKt+eI5KbwusluZRGljx1YoJKZ2NRPaeWiFTeGZO7SosQ==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dependencies:
+      playwright-core: 1.41.1
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
