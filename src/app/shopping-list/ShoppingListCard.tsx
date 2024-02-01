@@ -3,10 +3,11 @@
 import { type Unit } from "@prisma/client";
 import ShoppingListHandler from "~/app/shopping-list/ShoppingListFormHandler";
 import IngredientTable from "~/app/_components/IngredientTable";
-import { Card, CardHeader } from "@nextui-org/card";
 import {
   Button,
+  Card,
   CardBody,
+  CardHeader,
   Input,
   Select,
   SelectItem,
@@ -19,7 +20,7 @@ import { api } from "~/trpc/react";
 import { motion } from "framer-motion";
 import { Controller, useForm } from "react-hook-form";
 import UniversalModal from "~/app/_components/UniversalModal";
-import { z } from "zod";
+import { ShoppingListItemSchema } from "~/app/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ShoppingListModes, type ShoppingListType } from "~/app/lib/types";
 import { type Ingredient } from "~/app/lib/types";
@@ -30,31 +31,9 @@ export default function ShoppingListCard(shoppingList: ShoppingListType) {
   );
   const { onOpen, isOpen, onOpenChange, onClose } = useDisclosure();
 
-  const schema = z.object({
-    name: z.string().min(1),
-    quantity: z.number().min(1),
-    unit: z.enum(
-      [
-        "GRAM",
-        "KILOGRAM",
-        "LITER",
-        "MILLILITER",
-        "TEASPOON",
-        "TABLESPOON",
-        "CUP",
-        "PINCH",
-        "PIECE",
-      ],
-      {
-        required_error: "Unit is required",
-        invalid_type_error: "Invalid unit",
-      },
-    ),
-  });
-
   const { control, handleSubmit, reset } = useForm({
     mode: "onTouched",
-    resolver: zodResolver(schema),
+    resolver: zodResolver(ShoppingListItemSchema),
     defaultValues: {
       name: "",
       quantity: 1,

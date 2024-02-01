@@ -5,9 +5,8 @@ import type { RecipeStepIngredient } from "@prisma/client";
 import { type Key, useCallback, useState } from "react";
 import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
-import { Button, CardBody } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { Card, CardHeader } from "@nextui-org/card";
+import { Button, Card, CardBody, CardHeader } from "@nextui-org/react";
 import { type Ingredient } from "~/app/lib/types";
 
 type ShoppingListHandlerProps = {
