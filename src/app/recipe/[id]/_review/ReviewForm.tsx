@@ -4,13 +4,13 @@ import {
   Card,
   CardBody,
   CardFooter,
+  CardHeader,
   Textarea,
 } from "@nextui-org/react";
 import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
+import { ReviewSchema } from "~/app/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import RatingInput from "./RatingInput";
-import { CardHeader } from "@nextui-org/card";
 import type { RecipeReview } from "@prisma/client";
 
 export default function ReviewForm({
@@ -20,14 +20,9 @@ export default function ReviewForm({
   formValue: Partial<RecipeReview>;
   submit: (recipeForm: { rating: number; comment: string | null }) => void;
 }) {
-  const schema = z.object({
-    rating: z.number().min(1).max(5),
-    comment: z.string(),
-  });
-
   const { control, handleSubmit, formState } = useForm({
     mode: "onTouched",
-    resolver: zodResolver(schema),
+    resolver: zodResolver(ReviewSchema),
     defaultValues: {
       rating: 0,
       comment: "",
@@ -77,7 +72,7 @@ export default function ReviewForm({
       <CardFooter className="-mt-4 flex justify-end">
         <Button
           color="success"
-          onClick={handleSubmit(submit)}
+          onPress={() => handleSubmit(submit)()}
           isDisabled={!formState.isValid}
         >
           Submit

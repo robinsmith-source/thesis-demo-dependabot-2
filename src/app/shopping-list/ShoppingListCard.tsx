@@ -3,16 +3,17 @@
 import type { ShoppingList, ShoppingListItem, Unit } from "@prisma/client";
 import ShoppingListHandler from "~/app/shopping-list/ShoppingListFormHandler";
 import IngredientTable from "~/app/_components/IngredientTable";
-import { Card, CardHeader } from "@nextui-org/card";
 import {
   Button,
+  Card,
   CardBody,
+  CardHeader,
   Input,
   Select,
   SelectItem,
   useDisclosure,
 } from "@nextui-org/react";
-import React, { useState } from "react";
+import { useState } from "react";
 import type { Ingredient } from "~/utils/IngredientCalculator";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -21,7 +22,7 @@ import { motion } from "framer-motion";
 import { Modes } from "~/app/lib/shoppingListModes";
 import { Controller, useForm } from "react-hook-form";
 import UniversalModal from "~/app/_components/UniversalModal";
-import { z } from "zod";
+import { ShoppingListItemSchema } from "~/app/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export interface ShoppingListTableProps {
@@ -38,31 +39,9 @@ export default function ShoppingListCard({
   );
   const { onOpen, isOpen, onOpenChange, onClose } = useDisclosure();
 
-  const schema = z.object({
-    name: z.string().min(1),
-    quantity: z.number().min(1),
-    unit: z.enum(
-      [
-        "GRAM",
-        "KILOGRAM",
-        "LITER",
-        "MILLILITER",
-        "TEASPOON",
-        "TABLESPOON",
-        "CUP",
-        "PINCH",
-        "PIECE",
-      ],
-      {
-        required_error: "Unit is required",
-        invalid_type_error: "Invalid unit",
-      },
-    ),
-  });
-
   const { control, handleSubmit, reset } = useForm({
     mode: "onTouched",
-    resolver: zodResolver(schema),
+    resolver: zodResolver(ShoppingListItemSchema),
     defaultValues: {
       name: "",
       quantity: 1,
@@ -71,10 +50,8 @@ export default function ShoppingListCard({
   });
 
   const router = useRouter();
-  console.log(selectedIngredients);
 
   function onAdd(data: { name: string; quantity: number; unit: Unit }) {
-    console.log(typeof data.unit);
     addMutation.mutate({
       shoppingListId: shoppingList.id,
       ingredients: [

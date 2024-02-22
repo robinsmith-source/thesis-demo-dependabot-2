@@ -6,9 +6,8 @@ import { type Key, useCallback, useState } from "react";
 import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import type { Ingredient } from "~/utils/IngredientCalculator";
-import { Button, CardBody } from "@nextui-org/react";
+import { Button, Card, CardBody, CardHeader } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { Card, CardHeader } from "@nextui-org/card";
 
 interface ShoppingListHandlerProps {
   isAuthorized?: boolean;
@@ -71,7 +70,7 @@ export default function ShoppingListHandler({
               onChange={(listId) => setShoppingListId(listId)}
             />
             <Button
-              onClick={handleAddItem}
+              onPress={() => handleAddItem()}
               className="w-full"
               isDisabled={
                 !shoppingListId ||
@@ -82,12 +81,12 @@ export default function ShoppingListHandler({
               {!selectedIngredients || selectedIngredients.length < 1
                 ? "Select ingredients"
                 : !shoppingListId
-                ? "Select shopping list"
-                : `Add ${
-                    selectedIngredients?.length <= 1
-                      ? "Ingredient"
-                      : "Ingredients"
-                  } to shopping list`}
+                  ? "Select shopping list"
+                  : `Add ${
+                      selectedIngredients?.length <= 1
+                        ? "Ingredient"
+                        : "Ingredients"
+                    } to shopping list`}
             </Button>
           </>
         )}

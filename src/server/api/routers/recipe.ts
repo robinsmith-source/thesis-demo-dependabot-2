@@ -8,6 +8,7 @@ import {
 } from "~/server/api/trpc";
 import { utapi } from "~/server/uploadthing";
 import { calculateAverage } from "~/utils/RatingCalculator";
+import { RecipeSchema } from "~/app/lib/schemas";
 
 export const recipeRouter = createTRPCRouter({
   get: publicProcedure
@@ -134,57 +135,81 @@ export const recipeRouter = createTRPCRouter({
       return recipes;
     }),
 
-  create: protectedProcedure
+  getRecipeCount: publicProcedure
     .input(
       z.object({
-        name: z.string().min(3).max(50),
-        description: z.string().min(3).max(300).nullable(),
-        difficulty: z.enum(["EASY", "MEDIUM", "HARD", "EXPERT"]),
-        images: z.array(z.string()),
-        tags: z
-          .array(
-            z
-              .string({ invalid_type_error: "Tags must be strings" })
-              .min(1)
-              .regex(/^[a-z]+$/, "Tags can only contain lowercase characters"),
-          )
-          .max(10, "A recipe can only have 10 tags")
-          .refine((items) => new Set(items).size === items.length, {
-            message: "Must be an array of unique strings",
-          }),
-        steps: z.array(
-          z.object({
-            description: z.string().min(3).max(300),
-            duration: z.number().min(1),
-            stepType: z.enum([
-              "PREP",
-              "COOK",
-              "REST",
-              "SEASON",
-              "SERVE",
-              "MIX",
-            ]),
-            ingredients: z.array(
-              z.object({
-                name: z.string().min(1).max(50),
-                quantity: z.number().min(1),
-                unit: z.enum([
-                  "GRAM",
-                  "KILOGRAM",
-                  "LITER",
-                  "MILLILITER",
-                  "TEASPOON",
-                  "TABLESPOON",
-                  "CUP",
-                  "PINCH",
-                  "PIECE",
-                ]),
-              }),
-            ),
-          }),
-        ),
+        take: z.number().min(1).max(50),
+        skip: z.number().min(0).optional(),
+        name: z.string().optional(),
+        difficulty: z.enum(["EASY", "MEDIUM", "HARD", "EXPERT"]).optional(),
+        excludeRecipeId: z.string().cuid().optional(),
+        authorId: z.string().cuid().optional(),
+        tags: z.array(z.string()).optional(),
+        labels: z.array(z.string()).optional(),
       }),
     )
+    .query(({ ctx, input }) => {
+      function createLabelQuery(labels: string[]) {
+        return {
+          AND: labels.map((label) => ({
+            labels: {
+              some: {
+                name: label,
+              },
+            },
+          })),
+        };
+      }
+
+      return ctx.db.recipe.count({
+        where: {
+          ...(input.name && {
+            name: { contains: input.name, mode: "insensitive" },
+          }),
+          ...(input.difficulty && { difficulty: input.difficulty }),
+          ...(input.excludeRecipeId && { id: { not: input.excludeRecipeId } }),
+          ...(input.authorId && { authorId: input.authorId }),
+          ...(input.tags && { tags: { hasEvery: input.tags } }),
+          ...(input.labels && createLabelQuery(input.labels)),
+        },
+      });
+    }),
+
+  getFollowingFeed: protectedProcedure
+    .input(
+      z.object({
+        take: z.number().min(1).max(50),
+        skip: z.number().min(0).optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      return ctx.db.recipe.findMany({
+        where: {
+          author: {
+            followedBy: {
+              some: {
+                id: ctx.session.user.id,
+              },
+            },
+          },
+        },
+        select: {
+          id: true,
+          name: true,
+          difficulty: true,
+          labels: { select: { name: true } },
+          images: true,
+        },
+        take: input.take,
+        skip: input.skip ?? 0,
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    }),
+
+  create: protectedProcedure
+    .input(RecipeSchema)
     .mutation(async ({ ctx, input }) => {
       return await ctx.db.$transaction(async (tx) => {
         const recipe = await tx.recipe.create({
@@ -258,57 +283,7 @@ export const recipeRouter = createTRPCRouter({
     }),
 
   update: protectedProcedure
-    .input(
-      z.object({
-        id: z.string().cuid(),
-        name: z.string().min(3).max(50),
-        description: z.string().min(3).max(300).nullable(),
-        difficulty: z.enum(["EASY", "MEDIUM", "HARD", "EXPERT"]),
-        images: z.array(z.string()),
-        tags: z
-          .array(
-            z
-              .string({ invalid_type_error: "Tags must be strings" })
-              .min(1)
-              .regex(/^[a-z]+$/, "Tags can only contain lowercase characters"),
-          )
-          .max(10, "A recipe can only have 10 tags")
-          .refine((items) => new Set(items).size === items.length, {
-            message: "Must be an array of unique strings",
-          }),
-        steps: z.array(
-          z.object({
-            description: z.string().min(3).max(300),
-            duration: z.number().min(1),
-            stepType: z.enum([
-              "PREP",
-              "COOK",
-              "REST",
-              "SEASON",
-              "SERVE",
-              "MIX",
-            ]),
-            ingredients: z.array(
-              z.object({
-                name: z.string().min(1).max(50),
-                quantity: z.number().min(1),
-                unit: z.enum([
-                  "GRAM",
-                  "KILOGRAM",
-                  "LITER",
-                  "MILLILITER",
-                  "TEASPOON",
-                  "TABLESPOON",
-                  "CUP",
-                  "PINCH",
-                  "PIECE",
-                ]),
-              }),
-            ),
-          }),
-        ),
-      }),
-    )
+    .input(RecipeSchema.merge(z.object({ id: z.string().cuid() })))
     .mutation(async ({ ctx, input }) => {
       const recipe = await ctx.db.recipe.findFirst({
         where: { id: input.id },
@@ -474,4 +449,13 @@ export const recipeRouter = createTRPCRouter({
         },
       });
     }),
+
+  getAllLabels: publicProcedure.query(({ ctx }) => {
+    return ctx.db.recipeLabelCategory.findMany({
+      select: {
+        name: true,
+        RecipeLabel: { select: { name: true } },
+      },
+    });
+  }),
 });

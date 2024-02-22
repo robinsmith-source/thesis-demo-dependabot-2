@@ -15,10 +15,12 @@ import type {
 } from "@prisma/client";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { RecipeSchema } from "~/app/lib/schemas";
 import TagInput from "../_common/TagInput";
 import ImageUploader from "../_common/ImageUploader";
 import StepCreator from "../_common/StepCreator";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 export type RecipeFormValues = Recipe & {
   steps: (RecipeStep & {
@@ -33,72 +35,9 @@ export default function RecipeForm({
   formValue: Partial<RecipeFormValues>;
   submit: (recipeForm: RecipeFormValues) => void;
 }) {
-  const schema = z.object({
-    name: z
-      .string()
-      .min(3, "Names must be at least 3 characters long")
-      .max(50, "Names can only be 50 characters long"),
-    description: z
-      .string()
-      .min(3, "Descriptions must be at least 3 characters long")
-      .max(500, "Descriptions can only be 500 characters long")
-      .optional(),
-    difficulty: z.enum(["EASY", "MEDIUM", "HARD", "EXPERT"]),
-    tags: z
-      .array(
-        z
-          .string({ invalid_type_error: "Tags must be strings" })
-          .regex(/^[a-z]+$/, "Tags can only contain lowercase characters"),
-      )
-      .max(10, "A recipe can only have 10 tags")
-      .refine((items) => new Set(items).size === items.length, {
-        message: "Must be an array of unique strings",
-      }),
-    images: z.array(z.string()),
-    steps: z.array(
-      z.object({
-        description: z
-          .string()
-          .min(3, "Descriptions must be at least 3 characters long")
-          .max(500, "Descriptions can only be 500 characters long"),
-        duration: z.number().min(1, "Duration must be at least 1 minute"),
-        stepType: z.enum(["PREP", "COOK", "REST", "SEASON", "SERVE", "MIX"], {
-          required_error: "Step type is required",
-          invalid_type_error: "Invalid step type",
-        }),
-        ingredients: z.array(
-          z.object({
-            name: z
-              .string()
-              .min(1, "Name must be at least 1 character long")
-              .max(50, "Name can only be 50 characters long"),
-            quantity: z.number().min(1, "Quantity must be at least 1"),
-            unit: z.enum(
-              [
-                "GRAM",
-                "KILOGRAM",
-                "LITER",
-                "MILLILITER",
-                "TEASPOON",
-                "TABLESPOON",
-                "CUP",
-                "PINCH",
-                "PIECE",
-              ],
-              {
-                required_error: "Unit is required",
-                invalid_type_error: "Invalid unit",
-              },
-            ),
-          }),
-        ),
-      }),
-    ),
-  });
-
   const methods = useForm<RecipeFormValues>({
     mode: "onTouched",
-    resolver: zodResolver(schema),
+    resolver: zodResolver(RecipeSchema),
     defaultValues: {
       name: "",
       description: "",
@@ -109,6 +48,12 @@ export default function RecipeForm({
       ...formValue,
     },
   });
+
+  useEffect(() => {
+    if (methods.formState.errors.steps?.message) {
+      toast.error(methods.formState.errors.steps.message.toString());
+    }
+  }, [methods.formState.errors.steps]);
 
   return (
     <FormProvider {...methods}>
@@ -160,11 +105,12 @@ export default function RecipeForm({
             name="description"
             render={({ fieldState }) => (
               <Textarea
+                isRequired
                 className={"col-span-full mb-2"}
                 minRows={2}
                 label="Recipe Description"
                 placeholder="My grandma used to make this pizza for me ..."
-                {...methods.register("description", { required: false })}
+                {...methods.register("description")}
                 isInvalid={!!fieldState.error}
                 errorMessage={fieldState.error?.message}
               />
@@ -178,7 +124,11 @@ export default function RecipeForm({
         </div>
 
         <Divider className="my-4" />
-        <Button color="success" onClick={methods.handleSubmit(submit)}>
+        <Button
+          color="success"
+          onPress={() => methods.handleSubmit(submit)()}
+          isDisabled={!methods.formState.isValid}
+        >
           Submit
         </Button>
       </form>

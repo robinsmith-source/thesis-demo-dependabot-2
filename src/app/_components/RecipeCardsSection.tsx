@@ -10,6 +10,16 @@ export default function RecipeCardsSection({
   layout?: "grid" | "flex";
   recipes: RouterOutputs["recipe"]["getCards"];
 }) {
+  if (recipes.length === 0) {
+    return (
+      <section className="mx-auto">
+        <h3 className="p-5 text-center text-lg font-semibold text-warning-500">
+          Oh no, you&apos;ll starve!
+        </h3>
+      </section>
+    );
+  }
+
   return (
     <section
       className={`${className} w-full place-items-center justify-center gap-8 ${
@@ -18,7 +28,9 @@ export default function RecipeCardsSection({
           : "flex flex-wrap"
       }`}
     >
-      {recipes?.map((recipe) => <RecipeCard key={recipe.id} recipe={recipe} />)}
+      {recipes.map((recipe) => (
+        <RecipeCard key={recipe.id} recipe={recipe} />
+      ))}
     </section>
   );
 }

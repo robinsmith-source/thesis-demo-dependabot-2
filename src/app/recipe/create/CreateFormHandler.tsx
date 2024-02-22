@@ -4,16 +4,16 @@ import { api } from "~/trpc/react";
 import RecipeForm, { type RecipeFormValues } from "../_common/RecipeForm";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import type { RouterInputs } from "~/trpc/shared";
 
-export default function CreateFormHandler({ userId }: { userId?: string }) {
+export default function CreateFormHandler() {
   const router = useRouter();
 
   const mutation = api.recipe.create.useMutation({
     onSuccess: (id) => {
       toast.success("Recipe created!");
       router.push(`/recipe/${id}`);
-      revalidatePath(`/user/${userId}`);
+      router.refresh();
     },
 
     onError: (err) => {
@@ -38,7 +38,7 @@ export default function CreateFormHandler({ userId }: { userId?: string }) {
           quantity: ingredient.quantity,
           unit: ingredient.unit,
         })),
-      })),
+      })) as RouterInputs["recipe"]["create"]["steps"],
     });
   };
 
