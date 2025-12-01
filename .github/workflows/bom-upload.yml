@@ -1,0 +1,28 @@
+name: Continuous SBOM Upload
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sbom_submission:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install cdxgen CLI
+        run: npm install -g @cyclonedx/cdxgen
+
+      - name: Generate and Submit SBOM to Dependency-Track
+        run: |
+          cdxgen . \
+            --server-url "${{ secrets.DT_SERVER_HOSTNAME }}" \
+            --api-key "${{ secrets.DT_API_KEY }}" \
+            --project-group "Dependency Automation" \
+            --project-name "${{ github.repository }}" \
+            --project-version "${{ github.ref_name }}"
