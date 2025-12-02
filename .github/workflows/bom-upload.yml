@@ -1,14 +1,22 @@
 name: Continuous SBOM Upload
 
 on:
+  workflow_run:
+    workflows: ["Dependabot Automerge"]
+    types:
+      - completed
   push:
     branches:
       - main
 
 jobs:
   sbom_submission:
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu-22.04
+    if: >
+      ${{ 
+        (github.event.workflow_run.conclusion == 'success') || 
+        (github.event_name == 'push') 
+      }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
